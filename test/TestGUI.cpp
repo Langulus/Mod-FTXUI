@@ -19,7 +19,7 @@ CATCH_TRANSLATE_EXCEPTION(::Langulus::Exception const& ex) {
 
 SCENARIO("GUI creation", "[gui]") {
    Allocator::State memoryState;
-
+   
    for (int repeat = 0; repeat != 10; ++repeat) {
       GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
          // Create root entity                                          

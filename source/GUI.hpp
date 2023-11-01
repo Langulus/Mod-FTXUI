@@ -31,10 +31,18 @@ struct GUI final : A::UI::Module {
 
 private:
    // The main terminal renderer and loop                               
+   ::std::string mLog = "<log not attached>";
    ::std::string mInput;
-   ftxui::Component mCommand, mComponent, mRenderer;
+   ftxui::Component mCommand, mTabs, mTree, mRenderer;
    ftxui::ScreenInteractive mScreen;
    ftxui::Loop* mLoop {};
+   int mSplit = 50;
+
+   // Selected GUISystem                                                
+   int mSelectedTab = 0;
+   std::vector<std::string> mTabNames;
+   int mSelectedTree = 0;
+   std::vector<std::string> mTreeNames;
 
    // List of created GUI systems                                       
    // Each system will appear as a tab on the top of the window         

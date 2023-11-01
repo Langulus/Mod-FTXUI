@@ -29,7 +29,7 @@ SCENARIO("GUI creation", "[gui]") {
          // Create runtime at the root                                  
          root.CreateRuntime();
 
-         // Load ImGui module                                           
+         // Load FTXUI module                                           
          root.LoadMod("FTXUI");
 
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
@@ -37,7 +37,7 @@ SCENARIO("GUI creation", "[gui]") {
             auto gui = root.CreateUnitToken("GUISystem");
 
             // Update once                                              
-            root.Update(Time::zero());
+            while (root.Update(Time::zero()));
 
             THEN("Various traits change") {
                root.DumpHierarchy();
@@ -53,7 +53,7 @@ SCENARIO("GUI creation", "[gui]") {
             auto gui = root.CreateUnit<A::UI::System>();
 
             // Update once                                              
-            root.Update(Time::zero());
+            while (root.Update(Time::zero()));
 
             THEN("Various traits change") {
                root.DumpHierarchy();

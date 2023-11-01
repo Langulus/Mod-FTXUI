@@ -9,6 +9,14 @@
 #pragma once
 #include "GUISystem.hpp"
 #include <Flow/Verbs/Create.hpp>
+#include <ftxui/component/captured_mouse.hpp>
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/component/component_options.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/component/loop.hpp>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/util/ref.hpp>
 
 
 ///                                                                           
@@ -22,13 +30,21 @@ struct GUI final : A::UI::Module {
    LANGULUS_VERBS(Verbs::Create);
 
 private:
+   // The main terminal renderer and loop                               
+   ::std::string mInput;
+   ftxui::Component mCommand, mComponent, mRenderer;
+   ftxui::ScreenInteractive mScreen;
+   ftxui::Loop* mLoop {};
+
    // List of created GUI systems                                       
+   // Each system will appear as a tab on the top of the window         
    TFactory<GUISystem> mSystems;
 
 public:
    GUI(Runtime*, const Neat&);
+   ~GUI();
 
-   void Update(Time);
+   bool Update(Time);
    void Create(Verb&);
 };
 

@@ -20,15 +20,36 @@ LANGULUS_DEFINE_MODULE(
 ///   @param descriptor - instructions for configuring the module             
 GUI::GUI(Runtime* runtime, const Neat&)
    : A::UI::Module {MetaOf<GUI>(), runtime}
-   , mSystems {this} {
+   , mSystems {this}
+   , mScreen {ftxui::ScreenInteractive::Fullscreen()} {
    Logger::Verbose(Self(), "Initializing...");
+   mCommand   = ftxui::Input(&mInput, " -input here- ");
+   mComponent = ftxui::Container::Vertical({mCommand});
+   mRenderer  = ftxui::Renderer(mComponent, [&] {
+      return ftxui::vbox({
+         ftxui::text("Hello " + mInput),
+         ftxui::filler(),
+         ftxui::separator(),
+         ftxui::hbox(ftxui::text("> "), mCommand->Render())
+      }) | ftxui::border;
+   });
+   mLoop = new ftxui::Loop(&mScreen, std::move(mRenderer));
    Logger::Verbose(Self(), "Initialized");
+}
+
+GUI::~GUI() {
+   if (mLoop)
+      delete mLoop;
 }
 
 /// Module update routine                                                     
 ///   @param dt - time from last update                                       
-void GUI::Update(Time) {
+bool GUI::Update(Time) {
+   if (mLoop and mLoop->HasQuitted())
+      return false;
 
+   mLoop->RunOnce();
+   return true;
 }
 
 /// Create/Destroy GUI systems                                                

@@ -16,6 +16,76 @@ LANGULUS_DEFINE_MODULE(
 
 using namespace ftxui;
 
+// Take a list of component, display them vertically, one column shifted to the
+// right.
+Component RepresentInner(std::vector<Component> children) {
+   Component vlist = Container::Vertical(std::move(children));
+   return Renderer(vlist, [vlist] {
+      return hbox({
+         text(" "),
+         vlist->Render(),
+      });
+   });
+}
+
+/// Represent a Trait as GUI                                                  
+///   @param trait - the trait to represent                                   
+///   @return the FTXUI representation                                        
+Component Represent(const Trait& trait) {
+   //TODO
+   return std::make_shared<ComponentBase>();
+}
+
+/// Represent a Unit as GUI                                                   
+///   @param unit - the unit to represent                                     
+///   @return the FTXUI representation                                        
+Component Represent(const Unit& unit) {
+   //TODO
+   return std::make_shared<ComponentBase>();
+}
+
+/// Represent a Thing as GUI                                                  
+///   @param thing - the thing to represent                                   
+///   @return the FTXUI representation                                        
+Component Represent(const Thing& thing) {
+   std::vector<Component> properties;
+
+   // Represent traits                                                  
+   std::vector<Component> traits;
+   for (auto traitlist : thing.GetTraits()) {
+      for(auto& trait : traitlist.mValue)
+         traits.push_back(Represent(trait));
+   }
+   if (not traits.empty())
+      properties.push_back(Collapsible("Traits", RepresentInner(traits)));
+
+   // Represent units                                                   
+   std::vector<Component> units;
+   for (auto& unit : thing.GetUnits())
+      units.push_back(Represent(**unit));
+   if (not units.empty())
+      properties.push_back(Collapsible("Units", RepresentInner(units)));
+
+   // Represent child-things                                            
+   std::vector<Component> children;
+   for (auto& child : thing.GetChildren())
+      children.push_back(Represent(**child));
+   if (not children.empty())
+      properties.push_back(Collapsible("Children", RepresentInner(children)));
+
+   // Combine all thing's properties                                    
+   auto objectGroup = Collapsible("Thing",
+      RepresentInner(properties)
+   );
+
+   return Renderer(objectGroup, [objectGroup] {
+      return hbox({
+          text(" "),
+          objectGroup->Render(),
+      });
+   });
+}
+
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
@@ -29,8 +99,7 @@ GUI::GUI(Runtime* runtime, const Neat&)
    mCommand = Input(&mInput, " -input here- ");
    mTabNames = {"Log", "Test"};
    mTabs = Dropdown(&mTabNames, &mSelectedTab);
-   mTreeNames = {"#ROOT", "#some other thing"};
-   mTree = Menu(&mTreeNames, &mSelectedTree);
+   mTree = Represent(*runtime->GetOwner());
 
    auto layout = Container::Vertical(
       {mCommand, mTabs, mTree}
@@ -54,12 +123,17 @@ GUI::GUI(Runtime* runtime, const Neat&)
          )
       });
    });
+
    auto right = Renderer(layout, [&] {
-      return mTree->Render();
+      return vbox({
+         text("Hierarchy:"),
+         separator(),
+         mTree->Render()
+      });
    });
-   auto split = ResizableSplitRight(right, left, &mSplit);
 
    // Create the main loop                                              
+   auto split = ResizableSplitRight(right, left, &mSplit);
    mLoop = new Loop(&mScreen, std::move(split));
 
    Logger::Verbose(Self(), "Initialized");

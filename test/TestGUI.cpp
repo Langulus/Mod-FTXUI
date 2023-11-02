@@ -37,7 +37,7 @@ SCENARIO("GUI creation", "[gui]") {
             auto gui = root.CreateUnitToken("GUISystem");
 
             // Update once                                              
-            while (root.Update(Time::zero()));
+            root.Update(Time::zero());
 
             THEN("Various traits change") {
                root.DumpHierarchy();
@@ -53,7 +53,7 @@ SCENARIO("GUI creation", "[gui]") {
             auto gui = root.CreateUnit<A::UI::System>();
 
             // Update once                                              
-            while (root.Update(Time::zero()));
+            root.Update(Time::zero());
 
             THEN("Various traits change") {
                root.DumpHierarchy();

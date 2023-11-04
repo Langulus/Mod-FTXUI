@@ -14,7 +14,7 @@ using namespace Langulus::Entity;
 
 LANGULUS_RTTI_BOUNDARY("MAIN")
 
-int main(int argc, char* argv[]) {
+int main(int, char**) {
    // Create root entity                                                
    Thing root;
    root.SetName("ROOT");

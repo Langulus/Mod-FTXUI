@@ -8,6 +8,7 @@ add_executable(LangulusModFTXUIDemo ${LANGULUS_MOD_FTXUI_DEMO_SOURCES})
 
 target_link_libraries(LangulusModFTXUIDemo
 	PRIVATE		Langulus
+                $<$<NOT:$<BOOL:${WIN32}>>:pthread>
 )
 
 langulus_copy_dlls(LangulusModFTXUIDemo ON LangulusModFTXUIDemo)

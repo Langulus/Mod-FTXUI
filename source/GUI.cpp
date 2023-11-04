@@ -31,7 +31,7 @@ Component RepresentInner(std::vector<Component> children) {
 /// Represent a Trait as GUI                                                  
 ///   @param trait - the trait to represent                                   
 ///   @return the FTXUI representation                                        
-Component Represent(const Trait& trait) {
+Component Represent(const Trait&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
@@ -39,7 +39,7 @@ Component Represent(const Trait& trait) {
 /// Represent a Unit as GUI                                                   
 ///   @param unit - the unit to represent                                     
 ///   @return the FTXUI representation                                        
-Component Represent(const Unit& unit) {
+Component Represent(const Unit&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
@@ -134,7 +134,14 @@ GUI::GUI(Runtime* runtime, const Neat&)
 
    // Create the main loop                                              
    auto split = ResizableSplitRight(right, left, &mSplit);
-   mLoop = new Loop(&mScreen, std::move(split));
+
+   try {
+      mLoop = new Loop(&mScreen, std::move(split));
+   }
+   catch (const std::exception& e) {
+      Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
+      throw;
+   }
 
    Logger::Verbose(Self(), "Initialized");
 }

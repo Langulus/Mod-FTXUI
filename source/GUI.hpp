@@ -30,6 +30,10 @@ struct GUI final : A::UI::Module {
    LANGULUS_VERBS(Verbs::Create);
 
 private:
+   // List of created GUI systems                                       
+   // Each system will appear as a tab on the top of the window         
+   TFactory<GUISystem> mSystems;
+
    // The main terminal renderer and loop                               
    ::std::string mLog = "<log not attached>";
    ::std::string mInput;
@@ -41,11 +45,6 @@ private:
    // Selected GUISystem                                                
    int mSelectedTab = 0;
    std::vector<std::string> mTabNames;
-   int mSelectedTree = 0;
-
-   // List of created GUI systems                                       
-   // Each system will appear as a tab on the top of the window         
-   TFactory<GUISystem> mSystems;
 
 public:
    GUI(Runtime*, const Neat&);

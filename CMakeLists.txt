@@ -6,7 +6,8 @@ project(LangulusModFTXUI
 )
 
 # Configure FTXUI library, it will be statically built inside this module		
-set(FTXUI_ENABLE_INSTALL OFF)
+set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+
 fetch_external_module(
     FTXUI
     GIT_REPOSITORY  https://github.com/ArthurSonzogni/ftxui

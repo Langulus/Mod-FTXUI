@@ -86,6 +86,8 @@ Component Represent(const Thing& thing) {
    });
 }
 
+std::string p = R"(In probability theory and statistics, Bayes' theorem (alternatively Bayes' law or Bayes' rule) describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes' theorem, a person's age can be used to more accurately assess the probability that they have cancer, compared to the assessment of the probability of cancer made without knowledge of the person's age. One of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. When applied, the probabilities involved in Bayes' theorem may have different probability interpretations. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.)";
+
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
@@ -100,22 +102,18 @@ GUI::GUI(Runtime* runtime, const Neat&)
    mTabNames = {"Log", "Test"};
    mTabs = Dropdown(&mTabNames, &mSelectedTab);
    mTree = Represent(*runtime->GetOwner());
-
-   auto layout = Container::Vertical(
-      {mCommand, mTabs, mTree}
-   );
-
-   std::string p = R"(In probability theory and statistics, Bayes' theorem (alternatively Bayes' law or Bayes' rule) describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes' theorem, a person's age can be used to more accurately assess the probability that they have cancer, compared to the assessment of the probability of cancer made without knowledge of the person's age. One of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. When applied, the probabilities involved in Bayes' theorem may have different probability interpretations. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.)";
+   mLogContainer = Container::Vertical({});
 
    // Create the renderers                                              
-   auto left = Renderer(layout, [&] {
+   auto layout = Container::Vertical({mLogContainer, mCommand, mTabs, mTree});
+   auto logRenderer = Renderer(layout, [this] {
+      return vbox(mLog) | vscroll_indicator | frame | flex;
+   });
+
+   auto left = Renderer(layout, [this, logRenderer] {
       return vbox({
          mTabs->Render(),
-         vbox(
-            //flexbox({text(mLog), paragraph(p)}) | notflex,
-            text(mLog),
-            filler()
-         ) | flex,
+         logRenderer->Render(),
          separatorCharacter(" ") | color(Color::DarkOrange) | underlined,
          hbox(
             text(">") | color(Color::DarkOrange) | bold,
@@ -124,7 +122,7 @@ GUI::GUI(Runtime* runtime, const Neat&)
       });
    });
 
-   auto right = Renderer(layout, [&] {
+   auto right = Renderer(layout, [this] {
       return vbox({
          text("Hierarchy:"),
          separator(),
@@ -156,9 +154,19 @@ GUI::~GUI() {
 ///   @param dt - time from last update                                       
 ///   @return false if the UI requested exit                                  
 bool GUI::Update(Time) {
+   if (mSplit != mSplitPrev) {
+      // Need to refresh paragraphs                                     
+      mSplitPrev = mSplit;
+      mLog.clear();
+
+      for (unsigned i = 0; i < 100; ++i)
+         mLog.push_back(paragraph(p) | size(WIDTH, EQUAL, mScreen.dimx() - mSplit - 3));
+   }
+
    if (mLoop and mLoop->HasQuitted())
       return false;
 
+   // Yield FTXUI                                                       
    mLoop->RunOnce();
    return true;
 }

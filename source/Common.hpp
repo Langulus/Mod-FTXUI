@@ -18,7 +18,6 @@ using namespace Langulus::Math;
 struct GUI;
 struct GUISystem;
 struct GUIItem;
-struct GUIFont;
 
 /// Include FTXUI                                                             
 #include <ftxui/dom/elements.hpp>

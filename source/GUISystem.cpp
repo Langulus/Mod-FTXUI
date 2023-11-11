@@ -16,8 +16,7 @@
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    : A::UI::System {MetaOf<GUISystem>(), descriptor}
    , ProducedFrom {producer, descriptor}
-   , mItems {this}
-   , mFonts {this} {
+   , mItems {this} {
 
 }
 
@@ -30,7 +29,6 @@ GUISystem::~GUISystem() {
 ///   @param verb - creation verb to satisfy                                  
 void GUISystem::Create(Verb& verb) {
    mItems.Create(verb);
-   mFonts.Create(verb);
 }
 
 void GUISystem::Draw(Verb&) {

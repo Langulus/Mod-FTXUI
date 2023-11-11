@@ -35,12 +35,13 @@ private:
    TFactory<GUISystem> mSystems;
 
    // The main terminal renderer and loop                               
-   ::std::string mLog = "<log not attached>";
+   ::std::vector<ftxui::Element> mLog;
    ::std::string mInput;
-   ftxui::Component mCommand, mTabs, mTree, mRenderer;
+   ftxui::Component mCommand, mTabs, mTree, mLogContainer, mRenderer;
    ftxui::ScreenInteractive mScreen;
    ftxui::Loop* mLoop {};
    int mSplit = 30;
+   int mSplitPrev = 0;
 
    // Selected GUISystem                                                
    int mSelectedTab = 0;

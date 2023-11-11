@@ -8,7 +8,6 @@
 ///                                                                           
 #pragma once
 #include "GUIItem.hpp"
-#include "GUIFont.hpp"
 
 
 ///                                                                           
@@ -26,7 +25,6 @@ struct GUISystem final : A::UI::System, ProducedFrom<GUI> {
 private:
    // List of created GUI items                                         
    TFactory<GUIItem> mItems;
-   TFactoryUnique<GUIFont> mFonts;
 
 public:
    GUISystem(GUI*, const Neat&);

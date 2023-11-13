@@ -36,15 +36,32 @@ private:
 
    // The main terminal renderer and loop                               
    ::std::vector<ftxui::Element> mLog;
-   ::std::string mInput;
-   ftxui::Component mCommand, mTabs, mTree, mLogContainer, mRenderer;
+
+   ftxui::Component mTabSelector;
+   ftxui::Component mTabContents;
+   int mSelectedTab = 0;
+
+   ftxui::Component mLogTab;
+   int mLogScroll;
+
+   ftxui::Component mFlowTab;
+   ftxui::Component mFlowContents;
+   ftxui::Component mFlowCommand;
+   ::std::string    mFlowCommandInput;
+
+   ftxui::Component mLeftPanel;
+
+   ftxui::Component mRightPanel;
+   ftxui::Component mTree;
+   ftxui::Component mSelection;
+
+   ftxui::Component mRenderer;
    ftxui::ScreenInteractive mScreen;
    ftxui::Loop* mLoop {};
    int mSplit = 30;
    int mSplitPrev = 0;
 
    // Selected GUISystem                                                
-   int mSelectedTab = 0;
    std::vector<std::string> mTabNames;
 
 public:

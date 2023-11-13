@@ -86,7 +86,6 @@ Component Represent(const Thing& thing) {
    });
 }
 
-std::string p = R"(In probability theory and statistics, Bayes' theorem (alternatively Bayes' law or Bayes' rule) describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes' theorem, a person's age can be used to more accurately assess the probability that they have cancer, compared to the assessment of the probability of cancer made without knowledge of the person's age. One of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. When applied, the probabilities involved in Bayes' theorem may have different probability interpretations. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.)";
 
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
@@ -97,45 +96,75 @@ GUI::GUI(Runtime* runtime, const Neat&)
    , mScreen {ScreenInteractive::Fullscreen()} {
    Logger::Verbose(Self(), "Initializing...");
 
-   // Create the component (and input) hierarchy                        
-   mCommand = Input(&mInput, " -input here- ");
-   mTabNames = {"Log", "Test"};
-   mTabs = Dropdown(&mTabNames, &mSelectedTab);
-   mTree = Represent(*runtime->GetOwner());
-   mLogContainer = Container::Vertical({});
+   // Create the tab selector                                           
+   mTabNames = {"Log", "Flow"};
+   mTabSelector = Toggle(&mTabNames, &mSelectedTab);
 
-   // Create the renderers                                              
-   auto layout = Container::Vertical({mLogContainer, mCommand, mTabs, mTree});
-   auto logRenderer = Renderer(layout, [this] {
+   // The log tab                                                       
+   mLogTab = Container::Vertical({});
+   auto logTabRenderer = Renderer(mLogTab, [&] {
       return vbox(mLog) | vscroll_indicator | frame | flex;
    });
 
-   auto left = Renderer(layout, [this, logRenderer] {
+   // The flow tab                                                      
+   mFlowContents = Container::Vertical({});
+   mFlowCommand = Input(&mFlowCommandInput, " -input here- ");
+   mFlowTab = Container::Vertical({
+      mFlowContents,
+      mFlowCommand
+   });
+   auto flowTabRenderer = Renderer(mFlowTab, [&] {
       return vbox({
-         mTabs->Render(),
-         logRenderer->Render(),
+         mFlowContents->Render(),
+         filler(),
          separatorCharacter(" ") | color(Color::DarkOrange) | underlined,
          hbox(
             text(">") | color(Color::DarkOrange) | bold,
-            mCommand->Render()
-         )
+            mFlowCommand->Render()
+         ),
+         separatorCharacter(" ")
       });
    });
 
-   auto right = Renderer(layout, [this] {
+   // The combined tabs                                                 
+   mTabContents = Container::Tab({
+      logTabRenderer,
+      flowTabRenderer
+   }, &mSelectedTab);
+
+   // The left panel, composed of mainly tabs                           
+   mLeftPanel = Container::Vertical({
+      mTabSelector,
+      mTabContents
+   });
+   auto leftRenderer = Renderer(mLeftPanel, [this] {
+      return vbox({
+         mTabSelector->Render() | border,
+         mTabContents->Render()
+      });
+   });
+
+   // The right panel, composed of the hierarchy tree, and selection    
+   mTree = Represent(*runtime->GetOwner());
+   mSelection = Container::Vertical({});
+   mRightPanel = Container::Vertical({
+      mTree,
+      mSelection
+   });
+   auto rightRenderer = Renderer(mRightPanel, [this] {
       return vbox({
          text("Hierarchy:"),
          separator(),
-         mTree->Render()
+         mTree->Render(),
+         filler(),
+         separator(),
+         mSelection->Render()
       });
    });
 
    // Create the main loop                                              
-   auto split = ResizableSplitRight(right, left, &mSplit);
-
-   try {
-      mLoop = new Loop(&mScreen, std::move(split));
-   }
+   auto split = ResizableSplitRight(rightRenderer, leftRenderer, &mSplit);
+   try { mLoop = new Loop(&mScreen, std::move(split)); }
    catch (const std::exception& e) {
       Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
       throw;
@@ -156,11 +185,10 @@ GUI::~GUI() {
 bool GUI::Update(Time) {
    if (mSplit != mSplitPrev) {
       // Need to refresh paragraphs                                     
+      std::string p = R"(In probability theory and statistics, Bayes' theorem (alternatively Bayes' law or Bayes' rule) describes the probability of an event, based on prior knowledge of conditions that might be related to the event. For example, if cancer is related to age, then, using Bayes' theorem, a person's age can be used to more accurately assess the probability that they have cancer, compared to the assessment of the probability of cancer made without knowledge of the person's age. One of the many applications of Bayes' theorem is Bayesian inference, a particular approach to statistical inference. When applied, the probabilities involved in Bayes' theorem may have different probability interpretations. With the Bayesian probability interpretation the theorem expresses how a subjective degree of belief should rationally change to account for availability of related evidence. Bayesian inference is fundamental to Bayesian statistics.)";
       mSplitPrev = mSplit;
       mLog.clear();
-
-      for (unsigned i = 0; i < 100; ++i)
-         mLog.push_back(paragraph(p) | size(WIDTH, EQUAL, mScreen.dimx() - mSplit - 3));
+      mLog.push_back(paragraph(p) | size(WIDTH, EQUAL, mScreen.dimx() - mSplit - 3));
    }
 
    if (mLoop and mLoop->HasQuitted())

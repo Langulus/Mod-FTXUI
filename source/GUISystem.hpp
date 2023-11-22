@@ -8,6 +8,8 @@
 ///                                                                           
 #pragma once
 #include "GUIItem.hpp"
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/dom/elements.hpp>
 
 
 ///                                                                           
@@ -25,13 +27,40 @@ struct GUISystem final : A::UI::System, ProducedFrom<GUI> {
 private:
    // List of created GUI items                                         
    TFactory<GUIItem> mItems;
+   
+   // The main terminal renderer and loop                               
+   ::std::vector<ftxui::Element> mLog;
+
+   ftxui::Component mTabSelector;
+   ftxui::Component mTabContents;
+   int mSelectedTab = 0;
+
+   ftxui::Component mLogTab;
+   int mLogScroll;
+
+   ftxui::Component mFlowTab;
+   ftxui::Component mFlowContents;
+   ftxui::Component mFlowCommand;
+   ::std::string    mFlowCommandInput;
+
+   ftxui::Component mLeftPanel;
+
+   ftxui::Component mRightPanel;
+   ftxui::Component mTree;
+   ftxui::Component mSelection;
+
+   ftxui::Component mRenderer;
+   int mSplit = 30;
+   int mSplitPrev = 0;
+
+   // Selected GUISystem                                                
+   std::vector<std::string> mTabNames;
 
 public:
    GUISystem(GUI*, const Neat&);
-   ~GUISystem();
 
    void Create(Verb&);
-   void Draw(Verb&);
 
+   void Update(Time);
    void Refresh();
 };

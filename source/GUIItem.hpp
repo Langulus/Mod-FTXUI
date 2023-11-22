@@ -23,6 +23,7 @@ struct GUIItem final : A::UI::Unit, ProducedFrom<GUISystem> {
 public:
    GUIItem(GUISystem*, const Neat&);
 
+   virtual void Update(Time) {}
    void Refresh();
 };
 

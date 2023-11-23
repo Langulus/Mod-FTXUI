@@ -15,9 +15,3 @@ add_test(
 	NAME		LangulusModFTXUITest
 	COMMAND		LangulusModFTXUITest
 )
-
-langulus_copy_dlls(LangulusModFTXUITest ON LangulusModFTXUITest)
-langulus_copy_dlls_advanced(LangulusModFTXUITest
-	TO			LangulusModFTXUITest
-	FROM		LangulusModFTXUI
-)

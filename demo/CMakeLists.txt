@@ -10,9 +10,3 @@ target_link_libraries(LangulusModFTXUIDemo
 	PRIVATE		Langulus
                 $<$<NOT:$<BOOL:${WIN32}>>:pthread>
 )
-
-langulus_copy_dlls(LangulusModFTXUIDemo ON LangulusModFTXUIDemo)
-langulus_copy_dlls_advanced(LangulusModFTXUIDemo
-	TO			LangulusModFTXUIDemo
-	FROM		LangulusModFTXUI
-)

@@ -57,14 +57,14 @@ Component Represent(const Thing& thing) {
    // Represent units                                                   
    std::vector<Component> units;
    for (auto& unit : thing.GetUnits())
-      units.push_back(Represent(**unit));
+      units.push_back(Represent(*unit));
    if (not units.empty())
       properties.push_back(Collapsible("Units", RepresentInner(units)));
 
    // Represent child-things                                            
    std::vector<Component> children;
    for (auto& child : thing.GetChildren())
-      children.push_back(Represent(**child));
+      children.push_back(Represent(*child));
    if (not children.empty())
       properties.push_back(Collapsible("Children", RepresentInner(children)));
 
@@ -87,6 +87,7 @@ Component Represent(const Thing& thing) {
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    : A::UI::System {MetaOf<GUISystem>(), descriptor}
    , ProducedFrom {producer, descriptor}
+   , mScreen {ScreenInteractive::Fullscreen()}
    , mItems {this} {
    
    // Create the tab selector                                           
@@ -138,7 +139,10 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    });
 
    // The right panel, composed of the hierarchy tree, and selection    
-   mTree = Represent(*GetOwners());
+   mTree = Container::Vertical({});
+   for (auto& thing : GetOwners()) {
+      mTree->Add(Represent(*thing));
+   }
    mSelection = Container::Vertical({});
    mRightPanel = Container::Vertical({
       mTree,
@@ -155,8 +159,23 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
       });
    });
 
+   // Combine both panels in a resizable split                          
+   auto main = ResizableSplitRight(rightRenderer, leftRenderer, &mSplit);
+   
    // Create the main loop                                              
-   auto split = ResizableSplitRight(rightRenderer, leftRenderer, &mSplit);
+   try {
+      mLoop = new Loop(&mScreen, std::move(main));
+   }
+   catch (const std::exception& e) {
+      Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
+      throw;
+   }
+}
+
+/// Shutdown the module                                                       
+GUISystem::~GUISystem() {
+   if (mLoop)
+      delete mLoop;
 }
 
 /// Produce GUI elements in the system                                        
@@ -167,10 +186,18 @@ void GUISystem::Create(Verb& verb) {
 
 /// System update routine                                                     
 ///   @param deltaTime - time between updates                                 
-void GUISystem::Update(Time deltaTime) {
+///   @return false if the system has been terminated by user request         
+bool GUISystem::Update(Time deltaTime) {
+   if (mLoop and mLoop->HasQuitted())
+      return false;
+
    // Update all UI elements                                            
    for (auto& item : mItems)
       item.Update(deltaTime);
+
+   // Yield FTXUI                                                       
+   mLoop->RunOnce();
+   return true;
 }
 
 /// React on environmental change                                             

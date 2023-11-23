@@ -9,6 +9,8 @@
 #pragma once
 #include "GUIItem.hpp"
 #include <ftxui/component/component_base.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/component/loop.hpp>
 #include <ftxui/dom/elements.hpp>
 
 
@@ -56,11 +58,17 @@ private:
    // Selected GUISystem                                                
    std::vector<std::string> mTabNames;
 
+   // Rendering context                                                 
+   ftxui::ScreenInteractive mScreen;
+   // Main loop for drawing, and reading console input                  
+   ftxui::Loop* mLoop {};
+
 public:
    GUISystem(GUI*, const Neat&);
+   ~GUISystem();
 
    void Create(Verb&);
 
-   void Update(Time);
+   bool Update(Time);
    void Refresh();
 };

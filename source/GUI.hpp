@@ -9,8 +9,6 @@
 #pragma once
 #include "GUISystem.hpp"
 #include <Flow/Verbs/Create.hpp>
-#include <ftxui/component/screen_interactive.hpp>
-#include <ftxui/component/loop.hpp>
 #include <ftxui/component/component.hpp>
 
 
@@ -29,20 +27,10 @@ private:
    // Each system will appear as a tab on the top of the window         
    TFactory<GUISystem> mSystems;
 
-   // Rendering context                                                 
-   ftxui::ScreenInteractive mScreen;
-   // Main loop for drawing, and reading console input                  
-   ftxui::Loop* mLoop {};
-   // Main container                                                    
-   ftxui::Component mMain;
-
 public:
    GUI(Runtime*, const Neat&);
-   ~GUI();
 
    bool Update(Time);
    void Create(Verb&);
-
-   ftxui::Component& GetContainer() noexcept;
 };
 

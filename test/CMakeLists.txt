@@ -14,4 +14,5 @@ target_link_libraries(LangulusModFTXUITest
 add_test(
 	NAME		LangulusModFTXUITest
 	COMMAND		LangulusModFTXUITest
+	WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )

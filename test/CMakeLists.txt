@@ -11,6 +11,10 @@ target_link_libraries(LangulusModFTXUITest
 				Catch2
 )
 
+add_dependencies(LangulusModFTXUITest
+	LangulusModFTXUI
+)
+
 add_test(
 	NAME		LangulusModFTXUITest
 	COMMAND		LangulusModFTXUITest

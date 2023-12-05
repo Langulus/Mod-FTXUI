@@ -87,9 +87,8 @@ Component Represent(const Thing& thing) {
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    : A::UI::System {MetaOf<GUISystem>(), descriptor}
    , ProducedFrom {producer, descriptor}
-   , mScreen {ScreenInteractive::Fullscreen()}
-   , mItems {this} {
-   
+   , mItems {this}
+   , mScreen {ScreenInteractive::Fullscreen()} {   
    // Create the tab selector                                           
    mTabNames = {"Log", "Flow"};
    mTabSelector = Toggle(&mTabNames, &mSelectedTab);

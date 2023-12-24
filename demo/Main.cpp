@@ -9,8 +9,6 @@
 #include <Entity/External.hpp>
 
 using namespace Langulus;
-using namespace Langulus::Anyness;
-using namespace Langulus::Entity;
 
 LANGULUS_RTTI_BOUNDARY(RTTI::MainBoundary)
 

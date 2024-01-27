@@ -163,7 +163,7 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    
    // Create the main loop                                              
    try {
-      mLoop = new Loop(&mScreen, std::move(main));
+      mLoop = new ftxui::Loop(&mScreen, std::move(main));
    }
    catch (const std::exception& e) {
       Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());

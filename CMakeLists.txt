@@ -17,7 +17,7 @@ fetch_external_module(
 file(GLOB_RECURSE
 	LANGULUS_MOD_FTXUI_SOURCES 
 	LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS
-	source/*.cpp source/*.hpp
+	source/*.cpp
 )
 
 # Build the module                                                              

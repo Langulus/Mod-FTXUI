@@ -169,6 +169,8 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
       Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
       throw;
    }
+
+   Couple(descriptor);
 }
 
 /// Shutdown the module                                                       

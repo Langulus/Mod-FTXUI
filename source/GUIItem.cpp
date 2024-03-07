@@ -15,7 +15,9 @@
 ///   @param descriptor - instructions for configuring the item               
 GUIItem::GUIItem(GUISystem* producer, const Neat& descriptor)
    : A::UI::Unit {MetaOf<GUIItem>(), descriptor}
-   , ProducedFrom {producer, descriptor} {}
+   , ProducedFrom {producer, descriptor} {
+   Couple(descriptor);
+}
 
 /// React on environmental change                                             
 void GUIItem::Refresh() {

@@ -23,8 +23,8 @@ using namespace ftxui;
 GUI::GUI(Runtime* runtime, const Neat&)
    : A::UI::Module {MetaOf<GUI>(), runtime}
    , mSystems {this} {
-   Logger::Verbose(Self(), "Initializing...");
-   Logger::Verbose(Self(), "Initialized");
+   VERBOSE_GUI("Initializing...");
+   VERBOSE_GUI("Initialized");
 }
 
 /// Module update routine                                                     

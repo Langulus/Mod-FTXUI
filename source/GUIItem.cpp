@@ -14,9 +14,11 @@
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the item               
 GUIItem::GUIItem(GUISystem* producer, const Neat& descriptor)
-   : A::UI::Unit {MetaOf<GUIItem>(), descriptor}
+   : A::UI::Unit {MetaOf<GUIItem>()}
    , ProducedFrom {producer, descriptor} {
+   VERBOSE_GUI("Initializing...");
    Couple(descriptor);
+   VERBOSE_GUI("Initialized");
 }
 
 /// React on environmental change                                             

@@ -15,6 +15,9 @@ struct GUI;
 struct GUISystem;
 struct GUIItem;
 
+#define VERBOSE_GUI(...)      Logger::Verbose(Self(), __VA_ARGS__)
+#define VERBOSE_GUI_TAB(...)  const auto tab = Logger::Verbose(Self(), __VA_ARGS__, Logger::Tabs {})
+
 /// Include FTXUI                                                             
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>

@@ -85,10 +85,12 @@ Component Represent(const Thing& thing) {
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
-   : A::UI::System {MetaOf<GUISystem>(), descriptor}
+   : A::UI::System {MetaOf<GUISystem>()}
    , ProducedFrom {producer, descriptor}
    , mItems {this}
-   , mScreen {ScreenInteractive::Fullscreen()} {   
+   , mScreen {ScreenInteractive::Fullscreen()} { 
+   VERBOSE_GUI("Initializing...");
+
    // Create the tab selector                                           
    mTabNames = {"Log", "Flow"};
    mTabSelector = Toggle(&mTabNames, &mSelectedTab);
@@ -171,6 +173,7 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    }
 
    Couple(descriptor);
+   VERBOSE_GUI("Initialized");
 }
 
 /// Shutdown the module                                                       

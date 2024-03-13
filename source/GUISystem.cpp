@@ -34,7 +34,7 @@ Component Represent(const Trait&) {
 /// Represent a Unit as GUI                                                   
 ///   @param unit - the unit to represent                                     
 ///   @return the FTXUI representation                                        
-Component Represent(const Unit&) {
+Component Represent(const A::Unit&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }

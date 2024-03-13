@@ -6,7 +6,8 @@
 /// Distributed under GNU General Public License v3+                          
 /// See LICENSE file, or https://www.gnu.org/licenses                         
 ///                                                                           
-#include <Entity/External.hpp>
+#include <Langulus.hpp>
+#include <Langulus/UI.hpp>
 
 using namespace Langulus;
 

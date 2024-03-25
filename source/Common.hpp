@@ -9,6 +9,7 @@
 #pragma once
 #include <Langulus.hpp>
 #include <Langulus/UI.hpp>
+#include <Langulus/Platform.hpp>
 
 using namespace Langulus;
 

@@ -15,11 +15,11 @@
 ///                                                                           
 ///   User interface module using FTXUI                                       
 ///                                                                           
-/// Manages and produces GUI systems                                          
+/// Manages and produces GUI systems (which are also console windows)         
 ///                                                                           
-struct GUI final : A::UI::Module {
+struct GUI final : A::UI::Module, A::PlatformModule {
    LANGULUS(ABSTRACT) false;
-   LANGULUS_BASES(A::UI::Module);
+   LANGULUS_BASES(A::UI::Module, A::PlatformModule);
    LANGULUS_VERBS(Verbs::Create);
 
 private:

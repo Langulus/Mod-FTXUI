@@ -21,7 +21,8 @@ using namespace ftxui;
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
 GUI::GUI(Runtime* runtime, const Neat&)
-   : A::UI::Module {MetaOf<GUI>(), runtime}
+   : Resolvable {MetaOf<GUI>()}
+   , A::Module {runtime}
    , mSystems {this} {
    VERBOSE_GUI("Initializing...");
    VERBOSE_GUI("Initialized");

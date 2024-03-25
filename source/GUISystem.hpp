@@ -18,12 +18,14 @@
 ///   GUI system                                                              
 ///                                                                           
 /// Manages and produces GUI items that interact with each other within an    
-/// isolated system                                                           
+/// isolated system. Also acts as A::Window, since ASCII graphics are         
+/// displayed in a console window, and usually there's only one associated    
+/// with a process at any given time.                                         
 ///                                                                           
-struct GUISystem final : A::UI::System, ProducedFrom<GUI> {
+struct GUISystem final : A::UI::System, A::Window, ProducedFrom<GUI> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) GUI;
-   LANGULUS_BASES(A::UI::System);
+   LANGULUS_BASES(A::UI::System, A::Window);
    LANGULUS_VERBS(Verbs::Create);
 
 private:
@@ -66,6 +68,10 @@ private:
 public:
    GUISystem(GUI*, const Neat&);
    ~GUISystem();
+
+   void* GetNativeHandle() const noexcept;
+   Scale2 GetSize() const noexcept;
+   bool IsMinimized() const noexcept;
 
    void Create(Verb&);
 

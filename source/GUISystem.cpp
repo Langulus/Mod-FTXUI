@@ -69,9 +69,7 @@ Component Represent(const Thing& thing) {
       properties.push_back(Collapsible("Children", RepresentInner(children)));
 
    // Combine all thing's properties                                    
-   auto objectGroup = Collapsible("Thing",
-      RepresentInner(properties)
-   );
+   auto objectGroup = Collapsible("Thing", RepresentInner(properties));
 
    return Renderer(objectGroup, [objectGroup] {
       return hbox({
@@ -85,7 +83,7 @@ Component Represent(const Thing& thing) {
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
-   : A::UI::System {MetaOf<GUISystem>()}
+   : Resolvable {MetaOf<GUISystem>()}
    , ProducedFrom {producer, descriptor}
    , mItems {this}
    , mScreen {ScreenInteractive::Fullscreen()} { 
@@ -207,4 +205,25 @@ bool GUISystem::Update(Time deltaTime) {
 /// React on environmental change                                             
 void GUISystem::Refresh() {
 
+}
+
+/// Get console window's handle                                               
+///   @return the handle                                                      
+void* GUISystem::GetNativeHandle() const noexcept {
+   //TODO do we really need it?
+   // https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/obtain-console-window-handle
+   return nullptr;
+}
+
+/// Get the console window size, in characters                                
+///   @return the size of the console window, in characters                   
+Math::Scale2 GUISystem::GetSize() const noexcept {
+   return {mScreen.dimx(), mScreen.dimy()};
+}
+
+/// Check if console window is minimized                                      
+///   @return always false                                                    
+bool GUISystem::IsMinimized() const noexcept {
+   // Always assume console window is not minimized                     
+   return false;
 }

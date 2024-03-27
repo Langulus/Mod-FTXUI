@@ -83,7 +83,7 @@ Component Represent(const Thing& thing) {
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
-   : Resolvable {MetaOf<GUISystem>()}
+   : Resolvable {this}
    , ProducedFrom {producer, descriptor}
    , mItems {this}
    , mScreen {ScreenInteractive::Fullscreen()} { 

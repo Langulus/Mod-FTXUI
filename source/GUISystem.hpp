@@ -14,7 +14,7 @@
 
 
 ///                                                                           
-///   GUI system                                                              
+///   FTXUI GUI system and window interface                                   
 ///                                                                           
 ///   Manages and produces GUI items that interact with each other within an  
 /// isolated system. Also acts as A::Window, since ASCII graphics are         
@@ -38,8 +38,9 @@ private:
    // Main loop for drawing, and reading console input                  
    ftxui::Loop* mLoop {};
 
-   // A backbuffer text written in the default canvas                   
-   mutable Text mBackbuffer;
+   // A backbuffer that gets filled by Draw method, and is used to draw 
+   // in the inner canvas                                               
+   mutable ftxui::Image mBackbuffer;
 
 public:
    GUISystem(GUI*, const Neat&);
@@ -48,7 +49,7 @@ public:
    void* GetNativeHandle() const noexcept;
    Scale2 GetSize() const noexcept;
    bool IsMinimized() const noexcept;
-   bool Draw(const Any&) const;
+   bool Draw(const Langulus::Ref<A::Image>&) const;
 
    void Create(Verb&);
 

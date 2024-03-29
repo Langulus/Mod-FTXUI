@@ -20,35 +20,15 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    : Resolvable {this}
    , ProducedFrom {producer, descriptor}
    , mItems {this}
-   , mScreen {ScreenInteractive::Fullscreen()} { 
+   , mScreen {ScreenInteractive::Fullscreen()}
+   , mBackbuffer {1, 1} {
    VERBOSE_GUI("Initializing...");
 
    // Create the main loop                                              
    auto component = Renderer([&] {
       auto my_image = canvas([&](Canvas& c) {
          c.DrawPointLine(0, 0, c.width(), c.height());
-
-         if (mBackbuffer) {
-            auto raw = mBackbuffer.GetRaw();
-            ftxui::Canvas::Stylizer style = [](ftxui::Pixel& p) {
-               p.background_color = ftxui::Color::Red;
-            };
-
-            int x = 0, y = 0;
-            while (*raw) {
-               auto end = raw + 1;
-               while (*end != '\0' and *end != '\n')
-                  ++end;
-
-               const auto count = end - raw;
-               c.DrawText(0, y*4, std::string(std::string_view(raw, count)), style);
-               if (*end == '\n')
-                  ++y;
-               raw += count + 1;
-            }
-            //c.DrawText(0, 0, "width = " + std::to_string(c.width()));
-            //c.DrawText(0, 4, "height = " + std::to_string(c.height()));
-         }
+         c.DrawImage(0, 0, mBackbuffer);
       });
       return my_image | flex;
    });
@@ -123,11 +103,12 @@ bool GUISystem::IsMinimized() const noexcept {
    return false;
 }
 
-/// Draw any string, including VT100 encoded colors                           
-///   @attention contents must be null-terminated                             
-///   @return true if arguments contains ASCII stuff                          
-bool GUISystem::Draw(const Any& what) const {
+/// Draw an image, interpreting it as console output                          
+///   @param what - the image to interpret to console output                  
+///   @return true if interpretation was a success                            
+bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
+   /*mBackbuffer = what;
    try { mBackbuffer = what.As<Text>(); } 
-   catch (...) { return false; }
+   catch (...) { return false; }*/
    return true;
 }

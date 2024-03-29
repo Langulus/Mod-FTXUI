@@ -8,16 +8,15 @@
 ///                                                                           
 #pragma once
 #include "GUIItem.hpp"
-#include <ftxui/component/component_base.hpp>
+#include "GUIEditor.hpp"
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/component/loop.hpp>
-#include <ftxui/dom/elements.hpp>
 
 
 ///                                                                           
 ///   GUI system                                                              
 ///                                                                           
-/// Manages and produces GUI items that interact with each other within an    
+///   Manages and produces GUI items that interact with each other within an  
 /// isolated system. Also acts as A::Window, since ASCII graphics are         
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
@@ -31,39 +30,16 @@ struct GUISystem final : A::UI::System, A::Window, ProducedFrom<GUI> {
 private:
    // List of created GUI items                                         
    TFactory<GUIItem> mItems;
-   
-   // The main terminal renderer and loop                               
-   ::std::vector<ftxui::Element> mLog;
-
-   ftxui::Component mTabSelector;
-   ftxui::Component mTabContents;
-   int mSelectedTab = 0;
-
-   ftxui::Component mLogTab;
-   int mLogScroll;
-
-   ftxui::Component mFlowTab;
-   ftxui::Component mFlowContents;
-   ftxui::Component mFlowCommand;
-   ::std::string    mFlowCommandInput;
-
-   ftxui::Component mLeftPanel;
-
-   ftxui::Component mRightPanel;
-   ftxui::Component mTree;
-   ftxui::Component mSelection;
-
-   ftxui::Component mRenderer;
-   int mSplit = 30;
-   int mSplitPrev = 0;
-
-   // Selected GUISystem                                                
-   std::vector<std::string> mTabNames;
+   // An editor interface                                               
+   GUIEditor* mEditor {};
 
    // Rendering context                                                 
    ftxui::ScreenInteractive mScreen;
    // Main loop for drawing, and reading console input                  
    ftxui::Loop* mLoop {};
+
+   // A backbuffer text written in the default canvas                   
+   mutable Text mBackbuffer;
 
 public:
    GUISystem(GUI*, const Neat&);
@@ -72,6 +48,7 @@ public:
    void* GetNativeHandle() const noexcept;
    Scale2 GetSize() const noexcept;
    bool IsMinimized() const noexcept;
+   bool Draw(const Any&) const;
 
    void Create(Verb&);
 

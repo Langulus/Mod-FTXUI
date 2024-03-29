@@ -11,7 +11,7 @@
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
    "GUI generator and simulator, using FTXUI as backend", "",
-   GUI, GUISystem, GUIItem
+   GUI, GUISystem, GUIItem, GUIEditor
 )
 
 using namespace ftxui;

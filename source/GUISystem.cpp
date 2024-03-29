@@ -8,76 +8,10 @@
 ///                                                                           
 #include "GUISystem.hpp"
 #include "GUI.hpp"
+#include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
 
-// Take a list of component, display them vertically, one column shifted to the
-// right.
-Component RepresentInner(std::vector<Component> children) {
-   Component vlist = Container::Vertical(std::move(children));
-   return Renderer(vlist, [vlist] {
-      return hbox({
-         text(" "),
-         vlist->Render(),
-      });
-   });
-}
-
-/// Represent a Trait as GUI                                                  
-///   @param trait - the trait to represent                                   
-///   @return the FTXUI representation                                        
-Component Represent(const Trait&) {
-   //TODO
-   return std::make_shared<ComponentBase>();
-}
-
-/// Represent a Unit as GUI                                                   
-///   @param unit - the unit to represent                                     
-///   @return the FTXUI representation                                        
-Component Represent(const A::Unit&) {
-   //TODO
-   return std::make_shared<ComponentBase>();
-}
-
-/// Represent a Thing as GUI                                                  
-///   @param thing - the thing to represent                                   
-///   @return the FTXUI representation                                        
-Component Represent(const Thing& thing) {
-   std::vector<Component> properties;
-
-   // Represent traits                                                  
-   std::vector<Component> traits;
-   for (auto traitlist : thing.GetTraits()) {
-      for(auto& trait : traitlist.mValue)
-         traits.push_back(Represent(trait));
-   }
-   if (not traits.empty())
-      properties.push_back(Collapsible("Traits", RepresentInner(traits)));
-
-   // Represent units                                                   
-   std::vector<Component> units;
-   for (auto& unit : thing.GetUnits())
-      units.push_back(Represent(*unit));
-   if (not units.empty())
-      properties.push_back(Collapsible("Units", RepresentInner(units)));
-
-   // Represent child-things                                            
-   std::vector<Component> children;
-   for (auto& child : thing.GetChildren())
-      children.push_back(Represent(*child));
-   if (not children.empty())
-      properties.push_back(Collapsible("Children", RepresentInner(children)));
-
-   // Combine all thing's properties                                    
-   auto objectGroup = Collapsible("Thing", RepresentInner(properties));
-
-   return Renderer(objectGroup, [objectGroup] {
-      return hbox({
-          text(" "),
-          objectGroup->Render(),
-      });
-   });
-}
 
 /// GUI system construction                                                   
 ///   @param producer - the system producer                                   
@@ -89,81 +23,41 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    , mScreen {ScreenInteractive::Fullscreen()} { 
    VERBOSE_GUI("Initializing...");
 
-   // Create the tab selector                                           
-   mTabNames = {"Log", "Flow"};
-   mTabSelector = Toggle(&mTabNames, &mSelectedTab);
-
-   // The log tab                                                       
-   mLogTab = Container::Vertical({});
-   auto logTabRenderer = Renderer(mLogTab, [&] {
-      return vbox(mLog) | vscroll_indicator | frame | flex;
-   });
-
-   // The flow tab                                                      
-   mFlowContents = Container::Vertical({});
-   mFlowCommand = Input(&mFlowCommandInput, " -input here- ");
-   mFlowTab = Container::Vertical({
-      mFlowContents,
-      mFlowCommand
-   });
-   auto flowTabRenderer = Renderer(mFlowTab, [&] {
-      return vbox({
-         mFlowContents->Render(),
-         filler(),
-         separatorCharacter(" ") | color(Color::DarkOrange) | underlined,
-         hbox(
-            text(">") | color(Color::DarkOrange) | bold,
-            mFlowCommand->Render()
-         ),
-         separatorCharacter(" ")
-      });
-   });
-
-   // The combined tabs                                                 
-   mTabContents = Container::Tab({
-      logTabRenderer,
-      flowTabRenderer
-   }, &mSelectedTab);
-
-   // The left panel, composed of mainly tabs                           
-   mLeftPanel = Container::Vertical({
-      mTabSelector,
-      mTabContents
-   });
-   auto leftRenderer = Renderer(mLeftPanel, [this] {
-      return vbox({
-         mTabSelector->Render() | border,
-         mTabContents->Render()
-      });
-   });
-
-   // The right panel, composed of the hierarchy tree, and selection    
-   mTree = Container::Vertical({});
-   for (auto& thing : GetOwners()) {
-      mTree->Add(Represent(*thing));
-   }
-   mSelection = Container::Vertical({});
-   mRightPanel = Container::Vertical({
-      mTree,
-      mSelection
-   });
-   auto rightRenderer = Renderer(mRightPanel, [this] {
-      return vbox({
-         text("Hierarchy:"),
-         separator(),
-         mTree->Render(),
-         filler(),
-         separator(),
-         mSelection->Render()
-      });
-   });
-
-   // Combine both panels in a resizable split                          
-   auto main = ResizableSplitRight(rightRenderer, leftRenderer, &mSplit);
-   
    // Create the main loop                                              
+   auto component = Renderer([&] {
+      auto my_image = canvas([&](Canvas& c) {
+         c.DrawPointLine(0, 0, c.width(), c.height());
+
+         if (mBackbuffer) {
+            auto raw = mBackbuffer.GetRaw();
+            ftxui::Canvas::Stylizer style = [](ftxui::Pixel& p) {
+               p.background_color = ftxui::Color::Red;
+            };
+
+            int x = 0, y = 0;
+            while (*raw) {
+               auto end = raw + 1;
+               while (*end != '\0' and *end != '\n')
+                  ++end;
+
+               const auto count = end - raw;
+               c.DrawText(0, y*4, std::string(std::string_view(raw, count)), style);
+               if (*end == '\n')
+                  ++y;
+               raw += count + 1;
+            }
+            //c.DrawText(0, 0, "width = " + std::to_string(c.width()));
+            //c.DrawText(0, 4, "height = " + std::to_string(c.height()));
+         }
+      });
+      return my_image | flex;
+   });
+
    try {
-      mLoop = new ftxui::Loop(&mScreen, std::move(main));
+      // Create the loop and immediately yield, so that we get proper   
+      // screen size and other parameters                               
+      mLoop = new ftxui::Loop(&mScreen, component);
+      mLoop->RunOnce();
    }
    catch (const std::exception& e) {
       Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
@@ -176,6 +70,8 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
 
 /// Shutdown the module                                                       
 GUISystem::~GUISystem() {
+   if (mEditor)
+      delete mEditor;
    if (mLoop)
       delete mLoop;
 }
@@ -210,8 +106,7 @@ void GUISystem::Refresh() {
 /// Get console window's handle                                               
 ///   @return the handle                                                      
 void* GUISystem::GetNativeHandle() const noexcept {
-   //TODO do we really need it?
-   // https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/obtain-console-window-handle
+   // No use for a console window handle                                
    return nullptr;
 }
 
@@ -226,4 +121,13 @@ Math::Scale2 GUISystem::GetSize() const noexcept {
 bool GUISystem::IsMinimized() const noexcept {
    // Always assume console window is not minimized                     
    return false;
+}
+
+/// Draw any string, including VT100 encoded colors                           
+///   @attention contents must be null-terminated                             
+///   @return true if arguments contains ASCII stuff                          
+bool GUISystem::Draw(const Any& what) const {
+   try { mBackbuffer = what.As<Text>(); } 
+   catch (...) { return false; }
+   return true;
 }

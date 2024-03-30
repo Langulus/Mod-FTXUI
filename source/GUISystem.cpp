@@ -8,6 +8,7 @@
 ///                                                                           
 #include "GUISystem.hpp"
 #include "GUI.hpp"
+#include <Math/Color.hpp>
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
@@ -107,6 +108,83 @@ bool GUISystem::IsMinimized() const noexcept {
 ///   @param what - the image to interpret to console output                  
 ///   @return true if interpretation was a success                            
 bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
+   const auto& image = const_cast<const A::Image&>(*what);
+   auto colorData = image.GetDataList<Traits::Color>();
+   auto additionalData = image.GetDataList();
+   using RGB = Math::RGB;
+   mBackbuffer = Image {
+      static_cast<int>(image.GetView().mWidth),
+      static_cast<int>(image.GetView().mHeight)
+   };
+
+   if (colorData and *colorData and additionalData and *additionalData) {
+      try {
+         // A fully fledged ASCII image                                 
+         // First color container is the foreground color array         
+         auto& fgColor = (*colorData)[0].As<TAny<RGB>>();
+         // Second color container is the background color array        
+         auto& bgColor = (*colorData)[1].As<TAny<RGB>>();
+         // Character data per pixel                                    
+         auto& symbols = (*additionalData)[0].As<TAny<Text>>();
+         // VT100 emphasis per pixel                                    
+         auto& styles  = (*additionalData)[1].As<TAny<Logger::Emphasis>>();
+
+         // Build an ftxui::Image                                       
+         for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
+            for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
+               uint32_t i = y * image.GetView().mWidth + x;
+               Pixel& p = mBackbuffer.PixelAt(x, y);
+               p.character = symbols[i];
+               p.background_color = Color {bgColor[i].r, bgColor[i].g, bgColor[i].b};
+               p.foreground_color = Color {fgColor[i].r, fgColor[i].g, fgColor[i].b};
+
+               auto& style = styles[i];
+               p.blink = style & Logger::Emphasis::Blink;
+               p.bold = style & Logger::Emphasis::Bold;
+               p.dim = style & Logger::Emphasis::Faint;
+               p.inverted = style & Logger::Emphasis::Reverse;
+               p.underlined = style & Logger::Emphasis::Underline;
+               p.underlined_double = false;
+               p.strikethrough = style & Logger::Emphasis::Strike;
+               p.automerge = false;
+            }
+         }
+
+         return true;
+      }
+      catch (...) {}
+   }
+   
+   if (colorData and *colorData) {
+      try {
+         // Only color data available                                   
+         auto& c = (*colorData)[0].As<TAny<RGB>>(0);
+
+         // Build an ftxui::Image                                       
+         for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
+            for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
+               uint32_t i = y * image.GetView().mWidth + x;
+               Pixel& p = mBackbuffer.PixelAt(x, y);
+               p.character = " ";
+               p.background_color = Color {c[i].r, c[i].g, c[i].b};
+               p.foreground_color = p.background_color;
+
+               p.blink = false;
+               p.bold = false;
+               p.dim = false;
+               p.inverted = false;
+               p.underlined = false;
+               p.underlined_double = false;
+               p.strikethrough = false;
+               p.automerge = false;
+            }
+         }
+
+         return true;
+      }
+      catch (...) {}
+   }
+
    /*mBackbuffer = what;
    try { mBackbuffer = what.As<Text>(); } 
    catch (...) { return false; }*/

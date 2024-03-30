@@ -24,7 +24,7 @@ int main(int, char**) {
    root.LoadMod("FTXUI");
 
    // Create user interface                                             
-   auto gui = root.CreateUnit<A::UI::System>();
+   root.CreateUnit<A::UI::System>();
 
    do {
       // Update until quit                                              

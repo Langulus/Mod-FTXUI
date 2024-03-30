@@ -11,6 +11,7 @@
 #include "GUIEditor.hpp"
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/component/loop.hpp>
+#include <Langulus/Image.hpp>
 
 
 ///                                                                           

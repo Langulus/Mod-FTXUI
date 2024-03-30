@@ -8,10 +8,13 @@
 ///                                                                           
 #include <Langulus.hpp>
 #include <Langulus/UI.hpp>
+#include <Flow/Time.hpp>
+#include <thread>
 
 using namespace Langulus;
 
 LANGULUS_RTTI_BOUNDARY(RTTI::MainBoundary)
+
 
 int main(int, char**) {
    // Create root entity                                                
@@ -23,7 +26,14 @@ int main(int, char**) {
    // Create user interface                                             
    auto gui = root.CreateUnit<A::UI::System>();
 
-   // Update until quit                                                 
-   while (root.Update(Time::zero()));
+   do {
+      // Update until quit                                              
+      constexpr auto dt = 16ms;
+      const auto nextRefresh = SteadyClock::Now() + dt;
+      if (not root.Update(dt))
+         break;
+      std::this_thread::sleep_until(nextRefresh);
+   }
+   while (true);
    return 0;
 }

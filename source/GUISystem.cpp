@@ -187,8 +187,5 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
       catch (...) {}
    }
 
-   /*mBackbuffer = what;
-   try { mBackbuffer = what.As<Text>(); } 
-   catch (...) { return false; }*/
    return true;
 }

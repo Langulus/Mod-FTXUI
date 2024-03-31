@@ -112,6 +112,8 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
    auto colorData = image.GetDataList<Traits::Color>();
    auto additionalData = image.GetDataList();
    using RGB = Math::RGB;
+   using Style = Logger::Emphasis;
+
    mBackbuffer = Image {
       static_cast<int>(image.GetView().mWidth),
       static_cast<int>(image.GetView().mHeight)
@@ -127,7 +129,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          // Character data per pixel                                    
          auto& symbols = (*additionalData)[0].As<TAny<Text>>();
          // VT100 emphasis per pixel                                    
-         auto& styles  = (*additionalData)[1].As<TAny<Logger::Emphasis>>();
+         auto& styles  = (*additionalData)[1].As<TAny<Style>>();
 
          // Build an ftxui::Image                                       
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
@@ -139,13 +141,13 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
                p.foreground_color = Color {fgColor[i].r, fgColor[i].g, fgColor[i].b};
 
                auto& style = styles[i];
-               p.blink = style & Logger::Emphasis::Blink;
-               p.bold = style & Logger::Emphasis::Bold;
-               p.dim = style & Logger::Emphasis::Faint;
-               p.inverted = style & Logger::Emphasis::Reverse;
-               p.underlined = style & Logger::Emphasis::Underline;
+               p.blink = style & Style::Blink;
+               p.bold = style & Style::Bold;
+               p.dim = style & Style::Faint;
+               p.inverted = style & Style::Reverse;
+               p.underlined = style & Style::Underline;
                p.underlined_double = false;
-               p.strikethrough = style & Logger::Emphasis::Strike;
+               p.strikethrough = style & Style::Strike;
                p.automerge = false;
             }
          }

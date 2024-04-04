@@ -36,7 +36,6 @@ private:
 
    // Rendering context                                                 
    ftxui::ScreenInteractive mScreen;
-   ftxui::Canvas mCanvas;
    // Main loop for drawing, and reading console input                  
    ftxui::Loop* mLoop {};
 

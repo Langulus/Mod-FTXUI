@@ -22,8 +22,7 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    , ProducedFrom {producer, descriptor}
    , mItems {this}
    , mScreen {ScreenInteractive::Fullscreen()}
-   , mBackbuffer {1, 1}
-   , mCanvas {} {
+   , mBackbuffer {1, 1} {
    VERBOSE_GUI("Initializing...");
 
    // Create the main loop                                              
@@ -31,7 +30,10 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
       // Create the loop and immediately yield, so that we get proper   
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
-         return canvas(&mCanvas) | flex;
+         return canvas([&](Canvas& c) {
+            c.DrawPointLine(0, 0, c.width(), c.height());
+            c.DrawImage(0, 0, mBackbuffer);
+         }) | flex;
       }));
       mLoop->RunOnce();
    }
@@ -72,8 +74,6 @@ bool GUISystem::Update(Time deltaTime) {
    // Draw the backbuffer to the canvas                                 
    // Note: canvas size will be updated by the screen renderer due to   
    //       the |flex decorator                                         
-   mCanvas.DrawPointLine(0, 0, mCanvas.width(), mCanvas.height());
-   mCanvas.DrawImage(0, 0, mBackbuffer);
 
    // Yield FTXUI                                                       
    mLoop->RunOnce();

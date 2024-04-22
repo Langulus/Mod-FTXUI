@@ -32,7 +32,7 @@ int main(int, char**) {
    auto invFpsLimit = round<system_clock::duration>(dsec {1. / FPS});
    auto m_BeginFrame = system_clock::now();
    auto m_EndFrame = m_BeginFrame + invFpsLimit;
-   unsigned frame_count_per_second = 0;
+   //unsigned frame_count_per_second = 0;
    auto prev_time_in_seconds = time_point_cast<seconds>(m_BeginFrame);
 
    while (true) {
@@ -43,10 +43,10 @@ int main(int, char**) {
       // This part is just measuring if we're keeping the frame rate    
       // It is not necessary to keep the frame rate                     
       const auto time_in_seconds = time_point_cast<seconds>(system_clock::now());
-      ++frame_count_per_second;
+      //++frame_count_per_second;
       if (time_in_seconds > prev_time_in_seconds) {
          //Logger::Info("FPS: ", frame_count_per_second);
-         frame_count_per_second = 0;
+         //frame_count_per_second = 0;
          prev_time_in_seconds = time_in_seconds;
       }
 

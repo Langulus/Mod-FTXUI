@@ -124,13 +124,13 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
       try {
          // A fully fledged ASCII image                                 
          // First color container is the foreground color array         
-         auto& fgColor = (*colorData)[0].As<TAny<RGB>>();
+         auto& fgColor = (*colorData)[0].As<TMany<RGB>>();
          // Second color container is the background color array        
-         auto& bgColor = (*colorData)[1].As<TAny<RGB>>();
+         auto& bgColor = (*colorData)[1].As<TMany<RGB>>();
          // Character data per pixel                                    
-         auto& symbols = (*additionalData)[0].As<TAny<Text>>();
+         auto& symbols = (*additionalData)[0].As<TMany<Text>>();
          // VT100 emphasis per pixel                                    
-         auto& styles  = (*additionalData)[1].As<TAny<Style>>();
+         auto& styles  = (*additionalData)[1].As<TMany<Style>>();
 
          // Build an ftxui::Image                                       
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
@@ -161,7 +161,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
    if (colorData and *colorData) {
       try {
          // Only color data available                                   
-         auto& c = (*colorData)[0].As<TAny<RGB>>(0);
+         auto& c = (*colorData)[0].As<TMany<RGB>>(0);
 
          // Build an ftxui::Image                                       
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {

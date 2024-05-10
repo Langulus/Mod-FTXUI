@@ -31,7 +31,6 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
          return canvas([&](Canvas& c) {
-            c.DrawPointLine(0, 0, c.width(), c.height());
             c.DrawImage(0, 0, mBackbuffer);
          }) | flex;
       }));
@@ -71,11 +70,8 @@ bool GUISystem::Update(Time deltaTime) {
    for (auto& item : mItems)
       item.Update(deltaTime);
 
-   // Draw the backbuffer to the canvas                                 
-   // Note: canvas size will be updated by the screen renderer due to   
-   //       the |flex decorator                                         
-
    // Yield FTXUI                                                       
+   mScreen.PostEvent(Event::Custom);
    mLoop->RunOnce();
    return true;
 }

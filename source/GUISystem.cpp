@@ -33,6 +33,10 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
          return canvas([&](Canvas& c) {
             c.DrawImage(0, 0, mBackbuffer);
          }) | flex;
+      }) | CatchEvent([&](Event event) -> bool {
+         if (event.is_mouse())
+            Logger::Special("mouse event"); //this works, but useful only for keyboard
+         return false;
       }));
       mLoop->RunOnce();
    }
@@ -65,6 +69,8 @@ void GUISystem::Create(Verb& verb) {
 bool GUISystem::Update(Time deltaTime) {
    if (mLoop and mLoop->HasQuitted())
       return false;
+
+   
 
    // Update all UI elements                                            
    for (auto& item : mItems)

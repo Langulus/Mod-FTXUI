@@ -15,9 +15,9 @@ fetch_external_module(
 )
 
 file(GLOB_RECURSE
-	LANGULUS_MOD_FTXUI_SOURCES 
-	LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS
-	source/*.cpp
+    LANGULUS_MOD_FTXUI_SOURCES 
+    LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS
+    source/*.cpp
 )
 
 # Build the module                                                              
@@ -25,9 +25,9 @@ add_library(LangulusModFTXUI SHARED ${LANGULUS_MOD_FTXUI_SOURCES})
 
 target_link_libraries(LangulusModFTXUI 
     PRIVATE     Langulus
-	            ftxui::screen
-				ftxui::dom
-				ftxui::component
+                ftxui::screen
+                ftxui::dom
+                ftxui::component
 )
 
 target_include_directories(LangulusModFTXUI
@@ -36,7 +36,7 @@ target_include_directories(LangulusModFTXUI
 
 if(LANGULUS_TESTING)
     enable_testing()
-	add_subdirectory(test)
+    add_subdirectory(test)
 endif()
 
 add_subdirectory(demo)

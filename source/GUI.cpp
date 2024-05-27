@@ -7,6 +7,9 @@
 /// See LICENSE file, or https://www.gnu.org/licenses                         
 ///                                                                           
 #include "GUI.hpp"
+#include <Flow/Verbs/Interact.hpp>
+#include <Entity/Event.hpp>
+#include <Math/Vector.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
@@ -22,8 +25,8 @@ using namespace ftxui;
 ///   @param descriptor - instructions for configuring the module             
 GUI::GUI(Runtime* runtime, const Neat&)
    : Resolvable {this}
-   , A::Module {runtime}
-   , mSystems {this} {
+   , A::Module  {runtime}
+   , mSystems   {this} {
    VERBOSE_GUI("Initializing...");
    VERBOSE_GUI("Initialized");
 }

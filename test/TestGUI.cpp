@@ -23,10 +23,7 @@ SCENARIO("GUI creation", "[gui]") {
    for (int repeat = 0; repeat != 10; ++repeat) {
       GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
          // Create root entity                                          
-         Thing root;
-         root.SetName("ROOT");
-         root.CreateRuntime();
-         root.LoadMod("FTXUI");
+         auto root = Thing::Root<false>("FTXUI");
 
          WHEN("The GUI system is created via abstractions") {
             auto gui = root.CreateUnit<A::UI::System>();

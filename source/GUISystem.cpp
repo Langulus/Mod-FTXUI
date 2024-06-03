@@ -34,8 +34,8 @@ GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
             c.DrawImage(0, 0, mBackbuffer);
          }) | flex;
       }) | CatchEvent([&](Event event) -> bool {
-         if (event.is_mouse())
-            Logger::Special("mouse event"); //this works, but useful only for keyboard
+         //if (event.is_mouse())
+            //Logger::Special("mouse event"); //this works, but useful only for keyboard
          return false;
       }));
       mLoop->RunOnce();

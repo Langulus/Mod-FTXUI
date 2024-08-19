@@ -20,7 +20,7 @@ using namespace ftxui;
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
    : Resolvable {this}
    , ProducedFrom {producer, descriptor}
-   , mItems {this}
+   //, mItems {this}
    , mScreen {ScreenInteractive::Fullscreen()}
    , mBackbuffer {1, 1} {
    VERBOSE_GUI("Initializing...");
@@ -60,7 +60,7 @@ GUISystem::~GUISystem() {
 /// Produce GUI elements in the system                                        
 ///   @param verb - creation verb to satisfy                                  
 void GUISystem::Create(Verb& verb) {
-   mItems.Create(verb);
+   mItems.Create(this, verb);
 }
 
 /// System update routine                                                     
@@ -69,8 +69,6 @@ void GUISystem::Create(Verb& verb) {
 bool GUISystem::Update(Time deltaTime) {
    if (mLoop and mLoop->HasQuitted())
       return false;
-
-   
 
    // Update all UI elements                                            
    for (auto& item : mItems)

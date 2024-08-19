@@ -26,7 +26,7 @@ using namespace ftxui;
 GUI::GUI(Runtime* runtime, const Neat&)
    : Resolvable {this}
    , A::Module  {runtime}
-   , mSystems   {this} {
+   /*, mSystems   {this}*/ {
    VERBOSE_GUI("Initializing...");
    VERBOSE_GUI("Initialized");
 }
@@ -44,5 +44,5 @@ bool GUI::Update(Time deltaTime) {
 /// Create/Destroy GUI systems                                                
 ///   @param verb - the creation/destruction verb                             
 void GUI::Create(Verb& verb) {
-   mSystems.Create(verb);
+   mSystems.Create(this, verb);
 }

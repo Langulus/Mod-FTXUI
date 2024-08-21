@@ -18,11 +18,10 @@ using namespace ftxui;
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
 GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
-   : Resolvable {this}
+   : Resolvable   {this}
    , ProducedFrom {producer, descriptor}
-   //, mItems {this}
-   , mScreen {ScreenInteractive::Fullscreen()}
-   , mBackbuffer {1, 1} {
+   , mScreen      {ScreenInteractive::Fullscreen()}
+   , mBackbuffer  {1, 1} {
    VERBOSE_GUI("Initializing...");
 
    // Create the main loop                                              

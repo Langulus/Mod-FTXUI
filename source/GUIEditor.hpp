@@ -18,10 +18,10 @@
 ///                                                                           
 /// A single widget inside of a GUI system                                    
 ///                                                                           
-struct GUIEditor final : A::UI::Unit, ProducedFrom<GUISystem> {
+struct GUIEditor final : A::UIUnit, ProducedFrom<GUISystem> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) GUISystem;
-   LANGULUS_BASES(A::UI::Unit);
+   LANGULUS_BASES(A::UIUnit);
 
 private:
    // The main terminal renderer and loop                               

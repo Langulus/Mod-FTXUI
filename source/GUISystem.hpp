@@ -22,10 +22,10 @@
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
 ///                                                                           
-struct GUISystem final : A::UI::System, A::Window, ProducedFrom<GUI> {
+struct GUISystem final : A::UISystem, A::Window, ProducedFrom<GUI> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) GUI;
-   LANGULUS_BASES(A::UI::System, A::Window);
+   LANGULUS_BASES(A::UISystem, A::Window);
    LANGULUS_VERBS(Verbs::Create);
 
 private:

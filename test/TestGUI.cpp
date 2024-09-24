@@ -26,14 +26,14 @@ SCENARIO("GUI creation", "[gui]") {
          auto root = Thing::Root<false>("FTXUI");
 
          WHEN("The GUI system is created via abstractions") {
-            auto gui = root.CreateUnit<A::UI::System>();
+            auto gui = root.CreateUnit<A::UISystem>();
 
             // Update once                                              
             root.Update({});
             root.DumpHierarchy();
 
             REQUIRE(gui.GetCount() == 1);
-            REQUIRE(gui.CastsTo<A::UI::System>(1));
+            REQUIRE(gui.CastsTo<A::UISystem>(1));
             REQUIRE(gui.IsSparse());
             REQUIRE(root.GetUnits().GetCount() == 1);
          }
@@ -47,7 +47,20 @@ SCENARIO("GUI creation", "[gui]") {
             root.DumpHierarchy();
 
             REQUIRE(gui.GetCount() == 1);
-            REQUIRE(gui.CastsTo<A::UI::System>(1));
+            REQUIRE(gui.CastsTo<A::UISystem>(1));
+            REQUIRE(gui.IsSparse());
+            REQUIRE(root.GetUnits().GetCount() == 1);
+         }
+
+         WHEN("The GUI system is created via tokens") {
+            auto gui = root.CreateUnitToken("UISystem");
+
+            // Update once                                              
+            root.Update({});
+            root.DumpHierarchy();
+
+            REQUIRE(gui.GetCount() == 1);
+            REQUIRE(gui.CastsTo<A::UISystem>(1));
             REQUIRE(gui.IsSparse());
             REQUIRE(root.GetUnits().GetCount() == 1);
          }

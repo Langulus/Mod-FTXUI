@@ -43,7 +43,7 @@ private:
    mutable ftxui::Image mBackbuffer;
 
 public:
-   GUISystem(GUI*, const Neat&);
+   GUISystem(GUI*, Describe);
    ~GUISystem();
 
    void* GetNativeHandle() const noexcept;

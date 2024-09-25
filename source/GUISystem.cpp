@@ -16,7 +16,7 @@ using namespace ftxui;
 /// GUI system construction                                                   
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
-GUISystem::GUISystem(GUI* producer, const Neat& descriptor)
+GUISystem::GUISystem(GUI* producer, Describe descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}

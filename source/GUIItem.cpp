@@ -12,8 +12,8 @@
 /// GUI item construction                                                     
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the item               
-GUIItem::GUIItem(GUISystem* producer, const Neat& descriptor)
-   : Resolvable {this}
+GUIItem::GUIItem(GUISystem* producer, Describe descriptor)
+   : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");
    Couple(descriptor);

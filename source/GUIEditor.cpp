@@ -83,7 +83,7 @@ Component Represent(const Thing& thing) {
 /// GUI item construction                                                     
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the item               
-GUIEditor::GUIEditor(GUISystem* producer, Describe descriptor)
+GUIEditor::GUIEditor(GUISystem* producer, const Many& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");

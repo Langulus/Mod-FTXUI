@@ -21,7 +21,7 @@ struct GUIItem final : A::UIUnit, ProducedFrom<GUISystem> {
    LANGULUS_BASES(A::UIUnit);
 
 public:
-   GUIItem(GUISystem*, Describe);
+   GUIItem(GUISystem*, const Many&);
 
    virtual void Update(Time) {}
    void Refresh();

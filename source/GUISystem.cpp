@@ -16,7 +16,7 @@ using namespace ftxui;
 /// GUI system construction                                                   
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
-GUISystem::GUISystem(GUI* producer, Describe descriptor)
+GUISystem::GUISystem(GUI* producer, const Many& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}
@@ -36,6 +36,7 @@ GUISystem::GUISystem(GUI* producer, Describe descriptor)
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
          return false;
       }));
+
       mLoop->RunOnce();
    }
    catch (const std::exception& e) {
@@ -92,7 +93,7 @@ void* GUISystem::GetNativeHandle() const noexcept {
 
 /// Get the console window size, in characters                                
 ///   @return the size of the console window, in characters                   
-Math::Scale2 GUISystem::GetSize() const noexcept {
+auto GUISystem::GetSize() const noexcept -> Scale2 {
    return {mScreen.dimx(), mScreen.dimy()};
 }
 

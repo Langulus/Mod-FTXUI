@@ -43,11 +43,11 @@ private:
    mutable ftxui::Image mBackbuffer;
 
 public:
-   GUISystem(GUI*, Describe);
+   GUISystem(GUI*, const Many&);
    ~GUISystem();
 
    void* GetNativeHandle() const noexcept;
-   Scale2 GetSize() const noexcept;
+   auto GetSize() const noexcept -> Scale2;
    bool IsMinimized() const noexcept;
    bool Draw(const Langulus::Ref<A::Image>&) const;
 

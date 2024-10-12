@@ -24,7 +24,7 @@ SCENARIO("GUI creation", "[gui]") {
          // Create root entity                                          
          auto root = Thing::Root<false>("FTXUI");
 
-         /*WHEN("The GUI system is created via abstractions") {
+         WHEN("The GUI system is created via abstractions") {
             auto gui = root.CreateUnit<A::UISystem>();
 
             // Update once                                              
@@ -35,7 +35,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(gui.CastsTo<A::UISystem>(1));
             REQUIRE(gui.IsSparse());
             REQUIRE(root.GetUnits().GetCount() == 1);
-         }*/
+         }
 
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The GUI system is created via tokens") {
@@ -51,7 +51,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(root.GetUnits().GetCount() == 1);
          }
 
-         /*WHEN("The GUI system is created via tokens") {
+         WHEN("The GUI system is created via tokens") {
             auto gui = root.CreateUnitToken("UISystem");
 
             // Update once                                              
@@ -62,7 +62,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(gui.CastsTo<A::UISystem>(1));
             REQUIRE(gui.IsSparse());
             REQUIRE(root.GetUnits().GetCount() == 1);
-         }*/
+         }
       #endif
 
          // Check for memory leaks after each cycle                     

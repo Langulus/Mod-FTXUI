@@ -11,7 +11,7 @@ set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
 fetch_external_module(
     FTXUI
     GIT_REPOSITORY  https://github.com/ArthurSonzogni/FTXUI.git
-    GIT_TAG         c5357acbaa68efb2902db7b9257d3e1d291030d3
+    GIT_TAG         1d40687a403b7babdafdd577d10e001840b0f124
 )
 
 file(GLOB_RECURSE

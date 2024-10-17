@@ -56,6 +56,11 @@ GUISystem::~GUISystem() {
       delete mLoop;
 }
 
+/// First stage destruction                                                   
+void GUISystem::Teardown() {
+   mItems.Teardown();
+}
+
 /// Produce GUI elements in the system                                        
 ///   @param verb - creation verb to satisfy                                  
 void GUISystem::Create(Verb& verb) {

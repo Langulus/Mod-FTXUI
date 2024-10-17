@@ -46,13 +46,13 @@ public:
    GUISystem(GUI*, const Many&);
    ~GUISystem();
 
+   void Create(Verb&);
+
    void* GetNativeHandle() const noexcept;
    auto GetSize() const noexcept -> Scale2;
    bool IsMinimized() const noexcept;
    bool Draw(const Langulus::Ref<A::Image>&) const;
-
-   void Create(Verb&);
-
    bool Update(Time);
    void Refresh();
+   void Teardown();
 };

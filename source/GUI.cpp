@@ -29,11 +29,15 @@ GUI::GUI(Runtime* runtime, const Many&)
    VERBOSE_GUI("Initialized");
 }
 
+/// First stage of destruction                                                
+void GUI::Teardown() {
+   mSystems.Teardown();
+}
+
 /// Module update routine                                                     
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the UI requested exit                                  
 bool GUI::Update(Time deltaTime) {
-   // Update all GUI systems                                            
    for (auto& system : mSystems)
       system.Update(deltaTime);
    return true;

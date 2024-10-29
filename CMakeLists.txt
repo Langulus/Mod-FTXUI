@@ -21,11 +21,10 @@ file(GLOB_RECURSE
 )
 
 # Build the module                                                              
-add_library(LangulusModFTXUI SHARED ${LANGULUS_MOD_FTXUI_SOURCES})
+add_langulus_mod(LangulusModFTXUI ${LANGULUS_MOD_FTXUI_SOURCES})
 
 target_link_libraries(LangulusModFTXUI 
-    PRIVATE     Langulus
-                ftxui::screen
+    PRIVATE     ftxui::screen
                 ftxui::dom
                 ftxui::component
 )

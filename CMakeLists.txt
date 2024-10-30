@@ -21,16 +21,22 @@ file(GLOB_RECURSE
 )
 
 # Build the module                                                              
-add_langulus_mod(LangulusModFTXUI ${LANGULUS_MOD_FTXUI_SOURCES})
+add_langulus_mod(LangulusModFTXUI
+	${LANGULUS_MOD_FTXUI_SOURCES}
+	$<TARGET_OBJECTS:ftxui::screen>
+	$<TARGET_OBJECTS:ftxui::dom>
+	$<TARGET_OBJECTS:ftxui::component>
 
-target_link_libraries(LangulusModFTXUI 
-    PRIVATE     ftxui::screen
-                ftxui::dom
-                ftxui::component
 )
 
+#target_link_libraries(LangulusModFTXUI 
+#    PRIVATE     ftxui::screen
+#                ftxui::dom
+#                ftxui::component
+#)
+
 target_include_directories(LangulusModFTXUI
-    PRIVATE     ${FTXUI_SOURCE_DIR}
+    PRIVATE     ${FTXUI_SOURCE_DIR}/include
 )
 
 if(LANGULUS_TESTING)

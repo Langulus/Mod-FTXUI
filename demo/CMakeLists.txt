@@ -4,13 +4,9 @@ file(GLOB_RECURSE
 	*.cpp
 )
 
-add_executable(LangulusModFTXUIDemo ${LANGULUS_MOD_FTXUI_DEMO_SOURCES})
-
-target_link_libraries(LangulusModFTXUIDemo
-	PRIVATE		Langulus
-				$<$<NOT:$<BOOL:${WIN32}>>:pthread>
-)
-
-add_dependencies(LangulusModFTXUIDemo
-	LangulusModFTXUI
+add_langulus_app(LangulusModFTXUIDemo
+	SOURCES			${LANGULUS_MOD_FTXUI_DEMO_SOURCES}
+	LIBRARIES		Langulus
+					$<$<NOT:$<BOOL:${WIN32}>>:pthread>
+	DEPENDENCIES    LangulusModFTXUI
 )

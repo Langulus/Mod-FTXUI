@@ -5,9 +5,9 @@
 ///                                                                           
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
-#include <Langulus.hpp>
+#include <Langulus/Entity/Thing.hpp>
 #include <Langulus/UI.hpp>
-#include <Flow/Time.hpp>
+#include <Langulus/Flow/Time.hpp>
 #include <thread>
 
 LANGULUS_RTTI_BOUNDARY(RTTI::MainBoundary)

@@ -6,9 +6,9 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #include "GUI.hpp"
-#include <Flow/Verbs/Interact.hpp>
-#include <Entity/Event.hpp>
-#include <Math/Vector.hpp>
+#include <Langulus/Verbs/Interact.hpp>
+#include <Langulus/Entity/Event.hpp>
+#include <Langulus/Math/Vector.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",

@@ -7,7 +7,7 @@
 ///                                                                           
 #include "GUISystem.hpp"
 #include "GUI.hpp"
-#include <Math/Color.hpp>
+#include <Langulus/Math/Color.hpp>
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;

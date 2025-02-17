@@ -11,7 +11,7 @@ set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
 fetch_external_module(
     FTXUI
     GIT_REPOSITORY  https://github.com/ArthurSonzogni/FTXUI.git
-    GIT_TAG         1d40687a403b7babdafdd577d10e001840b0f124
+    GIT_TAG         e213cfda372114fd551e20eddbf4263df6c8f759 # main branch
 )
 
 file(GLOB_RECURSE
@@ -26,21 +26,14 @@ add_langulus_mod(LangulusModFTXUI
 	$<TARGET_OBJECTS:ftxui::screen>
 	$<TARGET_OBJECTS:ftxui::dom>
 	$<TARGET_OBJECTS:ftxui::component>
-
 )
-
-#target_link_libraries(LangulusModFTXUI 
-#    PRIVATE     ftxui::screen
-#                ftxui::dom
-#                ftxui::component
-#)
 
 target_include_directories(LangulusModFTXUI
     PRIVATE     ${FTXUI_SOURCE_DIR}/include
 )
 
 if(LANGULUS_TESTING)
-    enable_testing()
+	enable_testing()
     add_subdirectory(test)
 endif()
 

@@ -48,7 +48,7 @@ Component Represent(const Thing& thing) {
    // Represent traits                                                  
    std::vector<Component> traits;
    for (auto traitlist : thing.GetTraits()) {
-      for(auto& trait : traitlist.mValue)
+      for(auto& trait : traitlist.GetValue())
          traits.push_back(Represent(trait));
    }
    if (not traits.empty())

@@ -7,7 +7,7 @@
 ///                                                                           
 #pragma once
 #include "Common.hpp"
-#include <Langulus/Flow/Factory.hpp>
+#include <Langulus/Flow/Producible.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 

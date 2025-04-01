@@ -9,6 +9,7 @@
 #include <Langulus/Verbs/Interact.hpp>
 #include <Langulus/Entity/Event.hpp>
 #include <Langulus/Math/Vector.hpp>
+#include <Langulus/Profiler.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
@@ -38,6 +39,7 @@ void GUI::Teardown() {
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the UI requested exit                                  
 bool GUI::Update(Time deltaTime) {
+   LANGULUS(PROFILE);
    for (auto& system : mSystems)
       system.Update(deltaTime);
    return true;

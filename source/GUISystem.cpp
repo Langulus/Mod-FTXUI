@@ -128,9 +128,9 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
       try {
          // A fully fledged ASCII image                                 
          // First color container is the foreground color array         
-         auto& fgColor = (*colorData)[0].As<TMany<RGB>>();
+         auto& fgColor = (*colorData)[0].As<TMany<Math::RGBAf>>();
          // Second color container is the background color array        
-         auto& bgColor = (*colorData)[1].As<TMany<RGB>>();
+         auto& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
          // Character data per pixel                                    
          auto& symbols = (*additionalData)[0].As<TMany<Text>>();
          // VT100 emphasis per pixel                                    
@@ -142,8 +142,8 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
                uint32_t i = y * image.GetView().mWidth + x;
                Pixel& p = mBackbuffer.PixelAt(x, y);
                p.character = symbols[i];
-               p.background_color = Color {bgColor[i].r, bgColor[i].g, bgColor[i].b};
-               p.foreground_color = Color {fgColor[i].r, fgColor[i].g, fgColor[i].b};
+               p.background_color = Color {static_cast<uint8_t>(bgColor[i].r * 255), static_cast<uint8_t>(bgColor[i].g * 255), static_cast<uint8_t>(bgColor[i].b * 255)};
+               p.foreground_color = Color {static_cast<uint8_t>(fgColor[i].r * 255), static_cast<uint8_t>(fgColor[i].g * 255), static_cast<uint8_t>(fgColor[i].b * 255)};
 
                auto& style = styles[i];
                p.blink = style & Style::Blink;

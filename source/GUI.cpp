@@ -9,7 +9,6 @@
 #include <Langulus/Verbs/Interact.hpp>
 #include <Langulus/Entity/Event.hpp>
 #include <Langulus/Math/Vector.hpp>
-#include <Langulus/Profiler.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",

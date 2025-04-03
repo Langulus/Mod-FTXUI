@@ -71,6 +71,7 @@ void GUISystem::Create(Verb& verb) {
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the system has been terminated by user request         
 bool GUISystem::Update(Time deltaTime) {
+   LANGULUS(PROFILE);
    if (mLoop and mLoop->HasQuitted())
       return false;
 
@@ -113,6 +114,7 @@ bool GUISystem::IsMinimized() const noexcept {
 ///   @param what - the image to interpret to console output                  
 ///   @return true if interpretation was a success                            
 bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
+   LANGULUS(PROFILE);
    const auto& image = const_cast<const A::Image&>(*what);
    auto colorData = image.GetDataList<Traits::Color>();
    auto additionalData = image.GetDataList();
@@ -132,7 +134,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          // Second color container is the background color array        
          auto& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
          // Character data per pixel                                    
-         auto& symbols = (*additionalData)[0].As<TMany<Text>>();
+         auto& symbols = (*additionalData)[0].As<TMany<char>>();
          // VT100 emphasis per pixel                                    
          auto& styles  = (*additionalData)[1].As<TMany<Style>>();
 

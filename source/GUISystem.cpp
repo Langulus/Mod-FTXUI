@@ -100,7 +100,7 @@ void* GUISystem::GetNativeHandle() const noexcept {
 /// Get the console window size, in characters                                
 ///   @return the size of the console window, in characters                   
 auto GUISystem::GetSize() const noexcept -> Scale2 {
-   return {mScreen.dimx(), mScreen.dimy()};
+   return {mScreen.width(), mScreen.height()};
 }
 
 /// Check if console window is minimized                                      
@@ -143,7 +143,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
                uint32_t i = y * image.GetView().mWidth + x;
                Pixel& p = mBackbuffer.PixelAt(x, y);
-               p.character = symbols[i];
+               p.set_grapheme({&symbols[i], 1}, mBackbuffer);
                p.background_color = Color {static_cast<uint8_t>(bgColor[i].r * 255), static_cast<uint8_t>(bgColor[i].g * 255), static_cast<uint8_t>(bgColor[i].b * 255)};
                p.foreground_color = Color {static_cast<uint8_t>(fgColor[i].r * 255), static_cast<uint8_t>(fgColor[i].g * 255), static_cast<uint8_t>(fgColor[i].b * 255)};
 
@@ -167,15 +167,15 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
    if (colorData and *colorData) {
       try {
          // Only color data available                                   
-         auto& c = (*colorData)[0].As<TMany<RGB>>(0);
+         auto& c = (*colorData)[0].As<TMany<Math::RGBAf>>(0);
 
          // Build an ftxui::Image                                       
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
                uint32_t i = y * image.GetView().mWidth + x;
                Pixel& p = mBackbuffer.PixelAt(x, y);
-               p.character = " ";
-               p.background_color = Color {c[i].r, c[i].g, c[i].b};
+               p.reset_grapheme();
+               p.background_color = Color {static_cast<uint8_t>(c[i].r * 255), static_cast<uint8_t>(c[i].g * 255), static_cast<uint8_t>(c[i].b * 255)};
                p.foreground_color = p.background_color;
 
                p.blink = false;

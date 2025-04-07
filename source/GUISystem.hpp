@@ -41,7 +41,7 @@ private:
 
    // A backbuffer that gets filled by Draw method, and is used to draw 
    // in the inner canvas                                               
-   mutable ftxui::Image mBackbuffer;
+   mutable ftxui::Canvas mBackbuffer;
 
 public:
    GUISystem(GUI*, const Many&);

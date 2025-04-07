@@ -28,9 +28,7 @@ GUISystem::GUISystem(GUI* producer, const Many& descriptor)
       // Create the loop and immediately yield, so that we get proper   
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
-         return canvas([&](Canvas& c) {
-            c.DrawImage(0, 0, mBackbuffer);
-         }) | flex;
+         return canvas(&mBackbuffer) | flex;
       }) | CatchEvent([&](Event event) -> bool {
          //if (event.is_mouse())
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
@@ -121,10 +119,13 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
    using RGB = Math::RGB;
    using Style = Logger::Emphasis;
 
-   mBackbuffer = Image {
-      static_cast<int>(image.GetView().mWidth),
-      static_cast<int>(image.GetView().mHeight)
-   };
+   if (image.GetView().mWidth  != mBackbuffer.width()
+   or  image.GetView().mHeight != mBackbuffer.height()) {
+      mBackbuffer = Canvas {
+         static_cast<int>(image.GetView().mWidth) * 2,
+         static_cast<int>(image.GetView().mHeight) * 4
+      };
+   }
 
    if (colorData and *colorData and additionalData and *additionalData) {
       try {

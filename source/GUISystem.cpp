@@ -154,7 +154,11 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
                //*ps = *symbols_raw;
-               *pc = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};
+               *pc = Color {
+                  static_cast<uint8_t>(bgColor_raw->r * 255),
+                  static_cast<uint8_t>(bgColor_raw->g * 255),
+                  static_cast<uint8_t>(bgColor_raw->b * 255)
+               };
 
                //p->grapheme = *symbols_raw;
                //p->style.background_color = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};

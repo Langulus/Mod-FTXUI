@@ -39,9 +39,8 @@ private:
    // Main loop for drawing, and reading console input                  
    ftxui::Loop* mLoop {};
 
-   // A backbuffer that gets filled by Draw method, and is used to draw 
-   // in the inner canvas                                               
-   mutable ftxui::Canvas mBackbuffer;
+   // A backbuffer that gets filled by the renderer module              
+   mutable ftxui::ImageSimple mBackbuffer;
 
 public:
    GUISystem(GUI*, const Many&);

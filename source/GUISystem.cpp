@@ -28,7 +28,8 @@ GUISystem::GUISystem(GUI* producer, const Many& descriptor)
       // Create the loop and immediately yield, so that we get proper   
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
-         return canvas(&mBackbuffer) | flex;
+         LANGULUS(PROFILE);
+         return image_simple(&mBackbuffer) | flex;
       }) | CatchEvent([&](Event event) -> bool {
          //if (event.is_mouse())
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
@@ -74,8 +75,8 @@ bool GUISystem::Update(Time deltaTime) {
       return false;
 
    // Update all UI elements                                            
-   for (auto& item : mItems)
-      item.Update(deltaTime);
+   //for (auto& item : mItems)
+   //   item.Update(deltaTime);
 
    // Yield FTXUI                                                       
    mScreen.PostEvent(Event::Custom);
@@ -121,9 +122,9 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
 
    if (image.GetView().mWidth  != mBackbuffer.width()
    or  image.GetView().mHeight != mBackbuffer.height()) {
-      mBackbuffer = Canvas {
-         static_cast<int>(image.GetView().mWidth) * 2,
-         static_cast<int>(image.GetView().mHeight) * 4
+      mBackbuffer = ImageSimple {
+         static_cast<int>(image.GetView().mWidth ),
+         static_cast<int>(image.GetView().mHeight)
       };
    }
 
@@ -131,32 +132,51 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
       try {
          // A fully fledged ASCII image                                 
          // First color container is the foreground color array         
-         auto& fgColor = (*colorData)[0].As<TMany<Math::RGBAf>>();
+         //const auto& fgColor = (*colorData)[0].As<TMany<Math::RGBAf>>();
+         //auto fgColor_raw = fgColor.GetRaw();
+
          // Second color container is the background color array        
-         auto& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
+         const auto& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
+         auto bgColor_raw = bgColor.GetRaw();
+
          // Character data per pixel                                    
-         auto& symbols = (*additionalData)[0].As<TMany<char>>();
+         const auto& symbols = (*additionalData)[0].As<TMany<char>>();
+         auto symbols_raw = symbols.GetRaw();
+
          // VT100 emphasis per pixel                                    
-         auto& styles  = (*additionalData)[1].As<TMany<Style>>();
+         //const auto& styles  = (*additionalData)[1].As<TMany<Style>>();
+         //auto styles_raw = styles.GetRaw();
 
          // Build an ftxui::Image                                       
+         auto ps = mBackbuffer.get_chars().data();
+         memcpy(ps, symbols_raw, image.GetView().mHeight * image.GetView().mWidth);
+         auto pc = mBackbuffer.get_colors().data();
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
-               uint32_t i = y * image.GetView().mWidth + x;
-               Pixel& p = mBackbuffer.PixelAt(x, y);
-               p.set_grapheme({&symbols[i], 1}, mBackbuffer);
-               p.background_color = Color {static_cast<uint8_t>(bgColor[i].r * 255), static_cast<uint8_t>(bgColor[i].g * 255), static_cast<uint8_t>(bgColor[i].b * 255)};
-               p.foreground_color = Color {static_cast<uint8_t>(fgColor[i].r * 255), static_cast<uint8_t>(fgColor[i].g * 255), static_cast<uint8_t>(fgColor[i].b * 255)};
+               //*ps = *symbols_raw;
+               *pc = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};
 
-               auto& style = styles[i];
-               p.blink = style & Style::Blink;
-               p.bold = style & Style::Bold;
-               p.dim = style & Style::Faint;
-               p.inverted = style & Style::Reverse;
-               p.underlined = style & Style::Underline;
-               p.underlined_double = false;
-               p.strikethrough = style & Style::Strike;
-               p.automerge = false;
+               //p->grapheme = *symbols_raw;
+               //p->style.background_color = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};
+               //p->style.foreground_color = Color {static_cast<uint8_t>(fgColor_raw->r * 255), static_cast<uint8_t>(fgColor_raw->g * 255), static_cast<uint8_t>(fgColor_raw->b * 255)};
+
+               /*auto& style = *styles_raw;
+               p->style.blink = style & Style::Blink;
+               p->style.bold = style & Style::Bold;
+               p->style.dim = style & Style::Faint;
+               p->style.italic = style & Style::Italic;
+               p->style.inverted = style & Style::Reverse;
+               p->style.underlined = style & Style::Underline;
+               p->style.underlined_double = false;
+               p->style.strikethrough = style & Style::Strike;
+               p->style.automerge = false;*/
+
+               //++fgColor_raw;
+               ++bgColor_raw;
+               //++symbols_raw;
+               //++ps;
+               ++pc;
+               //++styles_raw;
             }
          }
 
@@ -165,35 +185,39 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
       catch (...) {}
    }
    
-   if (colorData and *colorData) {
+   /*if (colorData and *colorData) {
       try {
          // Only color data available                                   
-         auto& c = (*colorData)[0].As<TMany<Math::RGBAf>>(0);
+         const auto& c = (*colorData)[0].As<TMany<Math::RGBAf>>(0);
+         auto c_raw = c.GetRaw();
 
          // Build an ftxui::Image                                       
+         auto p = mBackbuffer.get_pixels().data();
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
-               uint32_t i = y * image.GetView().mWidth + x;
-               Pixel& p = mBackbuffer.PixelAt(x, y);
-               p.reset_grapheme();
-               p.background_color = Color {static_cast<uint8_t>(c[i].r * 255), static_cast<uint8_t>(c[i].g * 255), static_cast<uint8_t>(c[i].b * 255)};
-               p.foreground_color = p.background_color;
+               p->grapheme = ' ';
+               p->style.background_color = Color {static_cast<uint8_t>(c_raw->r * 255), static_cast<uint8_t>(c_raw->g * 255), static_cast<uint8_t>(c_raw->b * 255)};
+               p->style.foreground_color = p->style.background_color;
 
-               p.blink = false;
-               p.bold = false;
-               p.dim = false;
-               p.inverted = false;
-               p.underlined = false;
-               p.underlined_double = false;
-               p.strikethrough = false;
-               p.automerge = false;
+               p->style.blink = false;
+               p->style.bold = false;
+               p->style.dim = false;
+               p->style.italic = false;
+               p->style.inverted = false;
+               p->style.underlined = false;
+               p->style.underlined_double = false;
+               p->style.strikethrough = false;
+               p->style.automerge = false;
+
+               ++c_raw;
+               ++p;
             }
          }
 
          return true;
       }
       catch (...) {}
-   }
+   }*/
 
    return true;
 }

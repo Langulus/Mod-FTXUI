@@ -29,7 +29,7 @@ GUISystem::GUISystem(GUI* producer, const Many& descriptor)
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
          LANGULUS(PROFILE);
-         return image_simple(&mBackbuffer) | flex;
+         return image(&mBackbuffer) | flex;
       }) | CatchEvent([&](Event event) -> bool {
          //if (event.is_mouse())
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
@@ -122,7 +122,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
 
    if (image.GetView().mWidth  != mBackbuffer.width()
    or  image.GetView().mHeight != mBackbuffer.height()) {
-      mBackbuffer = ImageSimple {
+      mBackbuffer = Image {
          static_cast<int>(image.GetView().mWidth ),
          static_cast<int>(image.GetView().mHeight)
       };
@@ -140,7 +140,7 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          auto bgColor_raw = bgColor.GetRaw();
 
          // Character data per pixel                                    
-         const auto& symbols = (*additionalData)[0].As<TMany<char>>();
+         const auto& symbols = (*additionalData)[0].As<TMany<::std::string_view>>();
          auto symbols_raw = symbols.GetRaw();
 
          // VT100 emphasis per pixel                                    
@@ -148,19 +148,20 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          //auto styles_raw = styles.GetRaw();
 
          // Build an ftxui::Image                                       
-         auto ps = mBackbuffer.get_chars().data();
-         memcpy(ps, symbols_raw, image.GetView().mHeight * image.GetView().mWidth);
-         auto pc = mBackbuffer.get_colors().data();
+         auto p = mBackbuffer.get_pixels().data();
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
-               //*ps = *symbols_raw;
-               *pc = Color {
+               p->style.background_color = Color {
                   static_cast<uint8_t>(bgColor_raw->r * 255),
                   static_cast<uint8_t>(bgColor_raw->g * 255),
                   static_cast<uint8_t>(bgColor_raw->b * 255)
                };
 
-               //p->grapheme = *symbols_raw;
+               auto fg = static_cast<uint8_t>(255 - (bgColor_raw->r * 0.299 + bgColor_raw->g * 0.587 + bgColor_raw->b * 0.114) * 255);
+               if (fg >= 100 and fg <= 156) fg -= 100;
+               p->style.foreground_color = Color {fg, fg, fg};
+
+               p->grapheme = *symbols_raw;
                //p->style.background_color = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};
                //p->style.foreground_color = Color {static_cast<uint8_t>(fgColor_raw->r * 255), static_cast<uint8_t>(fgColor_raw->g * 255), static_cast<uint8_t>(fgColor_raw->b * 255)};
 
@@ -177,9 +178,9 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
 
                //++fgColor_raw;
                ++bgColor_raw;
-               //++symbols_raw;
+               ++symbols_raw;
                //++ps;
-               ++pc;
+               ++p;
                //++styles_raw;
             }
          }

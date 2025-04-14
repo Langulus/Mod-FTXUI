@@ -40,7 +40,7 @@ private:
    ftxui::Loop* mLoop {};
 
    // A backbuffer that gets filled by the renderer module              
-   mutable ftxui::ImageSimple mBackbuffer;
+   mutable ftxui::Image mBackbuffer;
 
 public:
    GUISystem(GUI*, const Many&);

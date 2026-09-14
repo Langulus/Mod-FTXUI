@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.30)
 project(LangulusModFTXUI
     VERSION         1.0.0
     DESCRIPTION     "Langulus plug-in module for handling user interface using FTXUI library"
@@ -10,8 +10,8 @@ set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
 
 fetch_external_module(
     FTXUI
-    GIT_REPOSITORY  https://github.com/Epixu/FTXUI.git
-    GIT_TAG         main
+    GIT_REPOSITORY  https://github.com/ArthurSonzogni/FTXUI.git
+    GIT_TAG         v7.0.3
 )
 
 file(GLOB_RECURSE

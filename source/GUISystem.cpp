@@ -20,7 +20,7 @@ GUISystem::GUISystem(GUI* producer, const Many& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}
-   , mBackbuffer  {1, 1} {
+   , mBackbuffer  {mScreen/*1, 1*/} {
    VERBOSE_GUI("Initializing...");
 
    // Create the main loop                                              
@@ -29,8 +29,9 @@ GUISystem::GUISystem(GUI* producer, const Many& descriptor)
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
          LANGULUS(PROFILE);
-         return image(&mBackbuffer) | flex;
-      }) | CatchEvent([&](Event event) -> bool {
+         return text("test");
+         //return {};// Surface(&mBackbuffer) | flex;
+      }) | CatchEvent([&](Event /*event*/) -> bool {
          //if (event.is_mouse())
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
          return false;
@@ -69,7 +70,7 @@ void GUISystem::Create(Verb& verb) {
 /// System update routine                                                     
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the system has been terminated by user request         
-bool GUISystem::Update(Time deltaTime) {
+bool GUISystem::Update(Time /*deltaTime*/) {
    LANGULUS(PROFILE);
    if (mLoop and mLoop->HasQuitted())
       return false;
@@ -99,7 +100,7 @@ void* GUISystem::GetNativeHandle() const noexcept {
 /// Get the console window size, in characters                                
 ///   @return the size of the console window, in characters                   
 auto GUISystem::GetSize() const noexcept -> Scale2 {
-   return {mScreen.width(), mScreen.height()};
+   return {mScreen.dimx(), mScreen.dimy()};
 }
 
 /// Check if console window is minimized                                      
@@ -120,9 +121,9 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
    using RGB = Math::RGB;
    using Style = Logger::Emphasis;
 
-   if (image.GetView().mWidth  != mBackbuffer.width()
-   or  image.GetView().mHeight != mBackbuffer.height()) {
-      mBackbuffer = Image {
+   if (image.GetView().mWidth  != static_cast<uint32_t>(mBackbuffer.dimx())
+   or  image.GetView().mHeight != static_cast<uint32_t>(mBackbuffer.dimy())) {
+      mBackbuffer = Surface {
          static_cast<int>(image.GetView().mWidth ),
          static_cast<int>(image.GetView().mHeight)
       };
@@ -148,10 +149,10 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
          //auto styles_raw = styles.GetRaw();
 
          // Build an ftxui::Image                                       
-         auto p = mBackbuffer.get_pixels().data();
+         auto p = reinterpret_cast<ftxuisurf&>(mBackbuffer).get_pixels().data();
          for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
             for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
-               p->style.background_color = Color {
+               p->background_color = Color {
                   static_cast<uint8_t>(bgColor_raw->r * 255),
                   static_cast<uint8_t>(bgColor_raw->g * 255),
                   static_cast<uint8_t>(bgColor_raw->b * 255)
@@ -159,9 +160,10 @@ bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
 
                auto fg = static_cast<uint8_t>(255 - (bgColor_raw->r * 0.299 + bgColor_raw->g * 0.587 + bgColor_raw->b * 0.114) * 255);
                if (fg >= 100 and fg <= 156) fg -= 100;
-               p->style.foreground_color = Color {fg, fg, fg};
+               p->foreground_color = Color {fg, fg, fg};
 
-               p->grapheme = *symbols_raw;
+               p->character = *symbols_raw;
+               //p->grapheme = *symbols_raw;
                //p->style.background_color = Color {static_cast<uint8_t>(bgColor_raw->r * 255), 0, 0};
                //p->style.foreground_color = Color {static_cast<uint8_t>(fgColor_raw->r * 255), static_cast<uint8_t>(fgColor_raw->g * 255), static_cast<uint8_t>(fgColor_raw->b * 255)};
 

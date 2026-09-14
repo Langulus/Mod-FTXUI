@@ -11,8 +11,14 @@
 #include <Langulus/Flow/Factory.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/component/loop.hpp>
+#include <ftxui/screen/surface.hpp>
 #include <Langulus/Image.hpp>
 
+struct ftxuisurf : ftxui::Surface {
+   auto get_pixels() -> std::vector<ftxui::Cell>& {
+      return cells_;
+   }
+};
 
 ///                                                                           
 ///   FTXUI GUI system and window interface                                   
@@ -22,7 +28,7 @@
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
 ///                                                                           
-struct GUISystem final : A::UISystem, A::Window, ProducedFrom<GUI> {
+struct GUISystem : A::UISystem, A::Window, ProducedFrom<GUI> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) GUI;
    LANGULUS_BASES(A::UISystem, A::Window);
@@ -40,7 +46,7 @@ private:
    ftxui::Loop* mLoop {};
 
    // A backbuffer that gets filled by the renderer module              
-   mutable ftxui::Image mBackbuffer;
+   ftxui::Surface& mBackbuffer;
 
 public:
    GUISystem(GUI*, const Many&);

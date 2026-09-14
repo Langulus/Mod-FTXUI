@@ -15,7 +15,7 @@
 ///                                                                           
 /// A single widget inside of a GUI system                                    
 ///                                                                           
-struct GUIItem final : A::UIUnit, ProducedFrom<GUISystem> {
+struct GUIItem : A::UIUnit, ProducedFrom<GUISystem> {
    LANGULUS(ABSTRACT) false;
    LANGULUS(PRODUCER) GUISystem;
    LANGULUS_BASES(A::UIUnit);

@@ -32,7 +32,7 @@ target_include_directories(LangulusModFTXUI
     PRIVATE     ${FTXUI_SOURCE_DIR}/include
 )
 
-if(LANGULUS_TESTING)
+if(LANGULUS_OPTION_TESTING)
 	enable_testing()
     add_subdirectory(test)
 endif()

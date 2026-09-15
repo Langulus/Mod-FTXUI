@@ -7,7 +7,7 @@
 ///                                                                           
 #include "GUI.hpp"
 #include <Langulus/Verbs/Interact.hpp>
-#include <Langulus/Entity/Event.hpp>
+#include <Langulus/Things/Event.hpp>
 #include <Langulus/Math/Vector.hpp>
 
 LANGULUS_DEFINE_MODULE(

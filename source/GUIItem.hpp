@@ -6,8 +6,8 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include "Common.hpp"
-#include <Langulus/Flow/Producible.hpp>
+#include "Export.hpp"
+#include <Langulus/Producible.hpp>
 
 
 ///                                                                           
@@ -15,10 +15,10 @@
 ///                                                                           
 /// A single widget inside of a GUI system                                    
 ///                                                                           
-struct GUIItem : A::UIUnit, ProducedFrom<GUISystem> {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS(PRODUCER) GUISystem;
-   LANGULUS_BASES(A::UIUnit);
+struct GUIItem : Things::UIUnit, ProducedFrom<GUISystem> {
+   using CTTI_Abstract  = No;
+   using CTTI_Producer  = GUISystem;
+   using CTTI_Bases     = Things::UIUnit;
 
 public:
    GUIItem(GUISystem*, const Many&);

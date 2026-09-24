@@ -6,8 +6,8 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include "Common.hpp"
-#include <Langulus/Flow/Producible.hpp>
+#include "Export.hpp"
+#include <Langulus/Producible.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 
@@ -17,10 +17,10 @@
 ///                                                                           
 /// A single widget inside of a GUI system                                    
 ///                                                                           
-struct GUIEditor : A::UIUnit, ProducedFrom<GUISystem> {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS(PRODUCER) GUISystem;
-   LANGULUS_BASES(A::UIUnit);
+struct GUIEditor : Things::UIUnit, ProducedFrom<GUISystem> {
+   using CTTI_Abstract  = No;
+   using CTTI_Producer  = GUISystem;
+   using CTTI_Bases     = Things::UIUnit;
 
 private:
    // The main terminal renderer and loop                               

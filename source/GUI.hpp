@@ -16,10 +16,10 @@
 ///                                                                           
 /// Manages and produces GUI systems (which are also console windows)         
 ///                                                                           
-struct GUI final : A::UIModule, A::PlatformModule {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS_BASES(A::UIModule, A::PlatformModule);
-   LANGULUS_VERBS(Verbs::Create);
+struct GUI final : Things::UIModule, Things::PlatformModule {
+   using CTTI_Abstract  = No;
+   using CTTI_Bases     = Types<Things::UIModule, Things::PlatformModule>;
+   using CTTI_Ability   = Verbs::Create;
 
 private:
    // List of created GUI systems                                       
@@ -27,7 +27,7 @@ private:
    TFactory<GUISystem> mSystems;
 
 public:
-   GUI(Runtime*, const Many&);
+   GUI(Things::Runtime*, const Many&);
 
    bool Update(Time);
    void Create(Verb&);

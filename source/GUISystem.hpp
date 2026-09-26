@@ -8,11 +8,11 @@
 #pragma once
 #include "GUIItem.hpp"
 #include "GUIEditor.hpp"
-#include <Langulus/Flow/Factory.hpp>
+#include <Langulus/Factory.hpp>
+#include <Langulus/Image.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/component/loop.hpp>
 #include <ftxui/screen/surface.hpp>
-#include <Langulus/Image.hpp>
 
 struct ftxuisurf : ftxui::Surface {
    auto get_pixels() -> std::vector<ftxui::Cell>& {
@@ -28,11 +28,11 @@ struct ftxuisurf : ftxui::Surface {
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
 ///                                                                           
-struct GUISystem : A::UISystem, A::Window, ProducedFrom<GUI> {
-   LANGULUS(ABSTRACT) false;
-   LANGULUS(PRODUCER) GUI;
-   LANGULUS_BASES(A::UISystem, A::Window);
-   LANGULUS_VERBS(Verbs::Create);
+struct GUISystem : Things::UISystem, Things::Window, Flow::ProducedFrom<GUI> {
+   using CTTI_Abstract  = No;
+   using CTTI_Producer  = GUI;
+   using CTTI_Bases     = Types<Things::UISystem, Things::Window>;
+   using CTTI_Ability   = Verbs::Create;
 
 private:
    // List of created GUI items                                         
@@ -57,7 +57,7 @@ public:
    void* GetNativeHandle() const noexcept;
    auto GetSize() const noexcept -> Scale2;
    bool IsMinimized() const noexcept;
-   bool Draw(const Langulus::Ref<A::Image>&) const;
+   bool Draw(const Ref<Things::Image>&) const;
    bool Update(Time);
    void Refresh();
    void Teardown();

@@ -6,9 +6,9 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #include "GUI.hpp"
-#include <Langulus/Verbs/Interact.hpp>
-#include <Langulus/Things/Event.hpp>
-#include <Langulus/Math/Vector.hpp>
+//#include <Langulus/Verbs/Interact.hpp>
+#include <Langulus/Event.hpp>
+#include <Langulus/Vectors/TVector.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
@@ -22,9 +22,9 @@ using namespace ftxui;
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
-GUI::GUI(Runtime* runtime, const Many&)
-   : Resolvable {this}
-   , A::Module  {runtime} {
+GUI::GUI(Things::Runtime* runtime, const Many&)
+   : Things::Resolvable {this}
+   , Things::Module     {runtime} {
    VERBOSE_GUI("Initializing...");
    VERBOSE_GUI("Initialized");
 }

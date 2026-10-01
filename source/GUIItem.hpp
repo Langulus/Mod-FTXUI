@@ -21,7 +21,7 @@ struct GUIItem : Things::UIUnit, ProducedFrom<GUISystem> {
    using CTTI_Bases     = Things::UIUnit;
 
 public:
-   GUIItem(GUISystem*, const Many&);
+   GUIItem(GUISystem*, Many const&);
 
    virtual void Update(Time) {}
    void Refresh();

@@ -49,7 +49,7 @@ private:
    ftxui::Surface& mBackbuffer;
 
 public:
-   GUISystem(GUI*, const Many&);
+   GUISystem(GUI*, Many const&);
    ~GUISystem();
 
    void Create(Verb&);

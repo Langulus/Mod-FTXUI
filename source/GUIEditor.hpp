@@ -53,7 +53,7 @@ private:
    std::vector<std::string> mTabNames;
 
 public:
-   GUIEditor(GUISystem*, const Many&);
+   GUIEditor(GUISystem*, Many const&);
 
    virtual void Update(Time) {}
    void Refresh();

@@ -22,7 +22,7 @@ using namespace ftxui;
 /// Module construction                                                       
 ///   @param runtime - the runtime that owns the module                       
 ///   @param descriptor - instructions for configuring the module             
-GUI::GUI(Things::Runtime* runtime, const Many&)
+GUI::GUI(Things::Runtime* runtime, Many const&)
    : Things::Resolvable {this}
    , Things::Module     {runtime} {
    VERBOSE_GUI("Initializing...");

@@ -23,18 +23,18 @@ Component RepresentInner(std::vector<Component> children) {
    });
 }
 
-/// Represent a Trait as GUI                                                  
+/// Represent a Tag as GUI                                                  
 ///   @param trait - the trait to represent                                   
 ///   @return the FTXUI representation                                        
-Component Represent(const Trait&) {
+Component Represent(const Tag&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
 
-/// Represent a Unit as GUI                                                   
+/// Represent a Part as GUI                                                   
 ///   @param unit - the unit to represent                                     
 ///   @return the FTXUI representation                                        
-Component Represent(const A::Unit&) {
+Component Represent(Part const&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
@@ -83,7 +83,7 @@ Component Represent(const Thing& thing) {
 /// GUI item construction                                                     
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the item               
-GUIEditor::GUIEditor(GUISystem* producer, const Many& descriptor)
+GUIEditor::GUIEditor(GUISystem* producer, Many const& descriptor)
    : Resolvable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");

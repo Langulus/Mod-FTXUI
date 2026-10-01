@@ -7,7 +7,7 @@
 ///                                                                           
 #include "GUISystem.hpp"
 #include "GUI.hpp"
-#include <Langulus/Math/Color.hpp>
+#include <Langulus/Colors/TColor.hpp>
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
@@ -17,8 +17,8 @@ using namespace ftxui;
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the GUI                
 GUISystem::GUISystem(GUI* producer, Many const& descriptor)
-   : Resolvable   {this}
-   , ProducedFrom {producer, descriptor}
+   : /*Resolvable   {this}
+   ,*/ ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}
    , mBackbuffer  {mScreen/*1, 1*/} {
    VERBOSE_GUI("Initializing...");
@@ -113,9 +113,9 @@ bool GUISystem::IsMinimized() const noexcept {
 /// Draw an image, interpreting it as console output                          
 ///   @param what - the image to interpret to console output                  
 ///   @return true if interpretation was a success                            
-bool GUISystem::Draw(const Langulus::Ref<A::Image>& what) const {
+bool GUISystem::Draw(const Ref<Things::Image>& what) const {
    LANGULUS(PROFILE);
-   const auto& image = const_cast<const A::Image&>(*what);
+   const auto& image = *what;
    auto colorData = image.GetDataList<Traits::Color>();
    auto additionalData = image.GetDataList();
    using RGB = Math::RGB;

@@ -7,7 +7,7 @@
 ///                                                                           
 #include "GUISystem.hpp"
 #include "GUI.hpp"
-#include <Langulus/Colors/TColor.hpp>
+#include <Langulus/Color.hpp>
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
@@ -116,7 +116,7 @@ bool GUISystem::IsMinimized() const noexcept {
 bool GUISystem::Draw(const Ref<Things::Image>& what) const {
    LANGULUS(PROFILE);
    const auto& image = *what;
-   auto colorData = image.GetDataList<Traits::Color>();
+   auto colorData = image.GetDataList<Tags::Color>();
    auto additionalData = image.GetDataList();
    using RGB = Math::RGB;
    using Style = Logger::Emphasis;

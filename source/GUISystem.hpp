@@ -9,7 +9,7 @@
 #include "GUIItem.hpp"
 #include "GUIEditor.hpp"
 #include <Langulus/Factory.hpp>
-#include <Langulus/Image.hpp>
+#include <Langulus/CppAPI/Image.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/component/loop.hpp>
 #include <ftxui/screen/surface.hpp>
@@ -24,7 +24,7 @@ struct ftxuisurf : ftxui::Surface {
 ///   FTXUI GUI system and window interface                                   
 ///                                                                           
 ///   Manages and produces GUI items that interact with each other within an  
-/// isolated system. Also acts as A::Window, since ASCII graphics are         
+/// isolated system. Also acts as Things::Window, since ASCII graphics are         
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
 ///                                                                           

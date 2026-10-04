@@ -6,8 +6,8 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include <Langulus/UI.hpp>
-#include <Langulus/Platform.hpp>
+#include <Langulus/CppAPI/UI.hpp>
+#include <Langulus/CppAPI/Platform.hpp>
 
 using namespace Langulus;
 

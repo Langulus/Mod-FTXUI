@@ -26,7 +26,7 @@ Component RepresentInner(std::vector<Component> children) {
 /// Represent a Tag as GUI                                                  
 ///   @param trait - the trait to represent                                   
 ///   @return the FTXUI representation                                        
-Component Represent(const Tag&) {
+Component Represent(Tag const&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }

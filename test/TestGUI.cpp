@@ -5,7 +5,7 @@
 ///                                                                           
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
-#include <Langulus/UI.hpp>
+#include <Langulus/CppAPI/UI.hpp>
 #include <Langulus/Testing.hpp>
 
 

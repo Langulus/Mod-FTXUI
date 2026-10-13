@@ -24,7 +24,7 @@ Component RepresentInner(std::vector<Component> children) {
 }
 
 /// Represent a Tag as GUI                                                  
-///   @param trait - the trait to represent                                   
+///   @param tag - the tag to represent                                   
 ///   @return the FTXUI representation                                        
 Component Represent(Tag const&) {
    //TODO
@@ -32,7 +32,7 @@ Component Represent(Tag const&) {
 }
 
 /// Represent a Part as GUI                                                   
-///   @param unit - the unit to represent                                     
+///   @param part - the part to represent                                     
 ///   @return the FTXUI representation                                        
 Component Represent(Part const&) {
    //TODO
@@ -48,18 +48,18 @@ Component Represent(const Thing& thing) {
    // Represent traits                                                  
    std::vector<Component> traits;
    for (auto traitlist : thing.GetTraits()) {
-      for(auto& trait : traitlist.GetValue())
-         traits.push_back(Represent(trait));
+      for(auto& tag : traitlist.GetValue())
+         traits.push_back(Represent(tag));
    }
    if (not traits.empty())
-      properties.push_back(Collapsible("Traits", RepresentInner(traits)));
+      properties.push_back(Collapsible("Tags", RepresentInner(traits)));
 
-   // Represent units                                                   
-   std::vector<Component> units;
-   for (auto& unit : thing.GetUnits())
-      units.push_back(Represent(*unit));
-   if (not units.empty())
-      properties.push_back(Collapsible("Units", RepresentInner(units)));
+   // Represent parts                                                   
+   std::vector<Component> parts;
+   for (auto& part : thing.GetUnits())
+      parts.push_back(Represent(*part));
+   if (not parts.empty())
+      properties.push_back(Collapsible("Parts", RepresentInner(parts)));
 
    // Represent child-things                                            
    std::vector<Component> children;

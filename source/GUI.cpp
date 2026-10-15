@@ -38,7 +38,7 @@ void GUI::Teardown() {
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the UI requested exit                                  
 bool GUI::Update(Time deltaTime) {
-   LANGULUS(PROFILE);
+   LglsProfile();
    for (auto& system : mSystems)
       system.Update(deltaTime);
    return true;

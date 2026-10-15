@@ -45,14 +45,14 @@ Component Represent(Part const&) {
 Component Represent(const Thing& thing) {
    std::vector<Component> properties;
 
-   // Represent traits                                                  
-   std::vector<Component> traits;
+   // Represent tags                                                  
+   std::vector<Component> tags;
    for (auto traitlist : thing.GetTraits()) {
       for(auto& tag : traitlist.GetValue())
-         traits.push_back(Represent(tag));
+         tags.push_back(Represent(tag));
    }
-   if (not traits.empty())
-      properties.push_back(Collapsible("Tags", RepresentInner(traits)));
+   if (not tags.empty())
+      properties.push_back(Collapsible("Tags", RepresentInner(tags)));
 
    // Represent parts                                                   
    std::vector<Component> parts;

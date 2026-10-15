@@ -28,7 +28,7 @@ GUISystem::GUISystem(GUI* producer, Many const& descriptor)
       // Create the loop and immediately yield, so that we get proper   
       // screen size and other parameters                               
       mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
-         LANGULUS(PROFILE);
+         LglsProfile();
          return text("test");
          //return {};// Surface(&mBackbuffer) | flex;
       }) | CatchEvent([&](Event /*event*/) -> bool {
@@ -71,7 +71,7 @@ void GUISystem::Create(Verb& verb) {
 ///   @param deltaTime - time between updates                                 
 ///   @return false if the system has been terminated by user request         
 bool GUISystem::Update(Time /*deltaTime*/) {
-   LANGULUS(PROFILE);
+   LglsProfile();
    if (mLoop and mLoop->HasQuitted())
       return false;
 
@@ -114,8 +114,8 @@ bool GUISystem::IsMinimized() const noexcept {
 ///   @param what - the image to interpret to console output                  
 ///   @return true if interpretation was a success                            
 bool GUISystem::Draw(const Ref<Things::Image>& what) const {
-   LANGULUS(PROFILE);
-   const auto& image = *what;
+   LglsProfile();
+   auto const& image = *what;
    auto colorData = image.GetDataList<Tags::Color>();
    auto additionalData = image.GetDataList();
    using RGB = Math::RGB;
@@ -133,19 +133,19 @@ bool GUISystem::Draw(const Ref<Things::Image>& what) const {
       try {
          // A fully fledged ASCII image                                 
          // First color container is the foreground color array         
-         //const auto& fgColor = (*colorData)[0].As<TMany<Math::RGBAf>>();
+         //auto const& fgColor = (*colorData)[0].As<TMany<Math::RGBAf>>();
          //auto fgColor_raw = fgColor.GetRaw();
 
          // Second color container is the background color array        
-         const auto& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
+         auto const& bgColor = (*colorData)[1].As<TMany<Math::RGBAf>>();
          auto bgColor_raw = bgColor.GetRaw();
 
          // Character data per pixel                                    
-         const auto& symbols = (*additionalData)[0].As<TMany<::std::string_view>>();
+         auto const& symbols = (*additionalData)[0].As<TMany<::std::string_view>>();
          auto symbols_raw = symbols.GetRaw();
 
          // VT100 emphasis per pixel                                    
-         //const auto& styles  = (*additionalData)[1].As<TMany<Style>>();
+         //auto const& styles  = (*additionalData)[1].As<TMany<Style>>();
          //auto styles_raw = styles.GetRaw();
 
          // Build an ftxui::Image                                       
@@ -195,7 +195,7 @@ bool GUISystem::Draw(const Ref<Things::Image>& what) const {
    /*if (colorData and *colorData) {
       try {
          // Only color data available                                   
-         const auto& c = (*colorData)[0].As<TMany<Math::RGBAf>>(0);
+         auto const& c = (*colorData)[0].As<TMany<Math::RGBAf>>(0);
          auto c_raw = c.GetRaw();
 
          // Build an ftxui::Image                                       

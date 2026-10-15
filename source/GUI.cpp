@@ -8,7 +8,7 @@
 #include "GUI.hpp"
 //#include <Langulus/Verbs/Interact.hpp>
 #include <Langulus/Event.hpp>
-#include <Langulus/Vectors/TVector.hpp>
+#include <Langulus/Math/Vector.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",

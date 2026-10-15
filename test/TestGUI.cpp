@@ -32,7 +32,7 @@ SCENARIO("GUI creation", "[gui]") {
 
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
          WHEN("The GUI system is created via tokens") {
-            auto gui = root.CreateUnitToken("GUISystem");
+            auto gui = root.CreatePartToken("GUISystem");
 
             // Update once                                              
             root.Update({});
@@ -45,7 +45,7 @@ SCENARIO("GUI creation", "[gui]") {
          }
 
          WHEN("The GUI system is created via tokens") {
-            auto gui = root.CreateUnitToken("UISystem");
+            auto gui = root.CreatePartToken("UISystem");
 
             // Update once                                              
             root.Update({});

@@ -47,7 +47,7 @@ Component Represent(const Thing& thing) {
 
    // Represent tags                                                  
    std::vector<Component> tags;
-   for (auto traitlist : thing.GetTraits()) {
+   for (auto traitlist : thing.GetTags()) {
       for(auto& tag : traitlist.GetValue())
          tags.push_back(Represent(tag));
    }

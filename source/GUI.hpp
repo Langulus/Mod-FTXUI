@@ -27,7 +27,7 @@ private:
    TFactory<GUISystem> mSystems;
 
 public:
-   GUI(Things::Runtime*, Many const&);
+   GUI(Runtime*, Many const&);
 
    bool Update(Time);
    void Create(Verb&);

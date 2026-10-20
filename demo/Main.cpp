@@ -21,7 +21,7 @@ int main(int, char**) {
    auto root = Thing::Root<false>("FTXUI");
 
    // Create user interface                                             
-   root.CreateUnit<A::UISystem>();
+   root.CreateUnit<Things::UISystem>();
 
    while (true) {
       // Update until quit                                              

@@ -14,14 +14,13 @@
 ///   GUI item                                                                
 ///                                                                           
 /// A single widget inside of a GUI system                                    
-///                                                                           
-struct GUIItem : Things::UIUnit, ProducedFrom<GUISystem> {
+struct GUIPart : Things::UIPart, ProducedFrom<GUISystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = GUISystem;
-   using CTTI_Bases     = Things::UIUnit;
+   using CTTI_Bases     = Things::UIPart;
 
 public:
-   GUIItem(GUISystem*, Many const&);
+   GUIPart(GUISystem*, Many const&);
 
    virtual void Update(Time) {}
    void Refresh();

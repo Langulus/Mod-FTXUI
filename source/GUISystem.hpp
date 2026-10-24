@@ -6,7 +6,7 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #pragma once
-#include "GUIItem.hpp"
+#include "GUIPart.hpp"
 #include "GUIEditor.hpp"
 #include <Langulus/Factory.hpp>
 #include <Langulus/CppAPI/Image.hpp>
@@ -28,7 +28,7 @@ struct ftxuisurf : ftxui::Surface {
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
 ///                                                                           
-struct GUISystem : Things::UISystem, Things::Window, Flow::ProducedFrom<GUI> {
+struct GUISystem : Things::UISystem, Things::Window, ProducedFrom<GUI> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = GUI;
    using CTTI_Bases     = Types<Things::UISystem, Things::Window>;
@@ -36,7 +36,7 @@ struct GUISystem : Things::UISystem, Things::Window, Flow::ProducedFrom<GUI> {
 
 private:
    // List of created GUI items                                         
-   TFactory<GUIItem> mItems;
+   TFactory<GUIPart> mItems;
    // An editor interface                                               
    GUIEditor* mEditor {};
 

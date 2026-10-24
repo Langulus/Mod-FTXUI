@@ -14,11 +14,11 @@ using namespace ftxui;
 
 
 /// GUI system construction                                                   
-///   @param producer - the system producer                                   
-///   @param descriptor - instructions for configuring the GUI                
+///   @param producer the system producer                                     
+///   @param descriptor instructions for configuring the GUI                  
 GUISystem::GUISystem(GUI* producer, Many const& descriptor)
-   : /*Resolvable   {this}
-   ,*/ ProducedFrom {producer, descriptor}
+   : Downcastable {this}
+   , ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}
    , mBackbuffer  {mScreen/*1, 1*/} {
    VERBOSE_GUI("Initializing...");
@@ -40,7 +40,7 @@ GUISystem::GUISystem(GUI* producer, Many const& descriptor)
       mLoop->RunOnce();
    }
    catch (const std::exception& e) {
-      Logger::Error(Self(), "Unable to create FTXUI main loop: ", e.what());
+      Logger::Error(this, "Unable to create FTXUI main loop: ", e.what());
       throw;
    }
 
@@ -62,13 +62,13 @@ void GUISystem::Teardown() {
 }
 
 /// Produce GUI elements in the system                                        
-///   @param verb - creation verb to satisfy                                  
+///   @param verb creation verb to satisfy                                    
 void GUISystem::Create(Verb& verb) {
    mItems.Create(this, verb);
 }
 
 /// System update routine                                                     
-///   @param deltaTime - time between updates                                 
+///   @param deltaTime time between updates                                   
 ///   @return false if the system has been terminated by user request         
 bool GUISystem::Update(Time /*deltaTime*/) {
    LglsProfile();
@@ -111,7 +111,7 @@ bool GUISystem::IsMinimized() const noexcept {
 }
 
 /// Draw an image, interpreting it as console output                          
-///   @param what - the image to interpret to console output                  
+///   @param what the image to interpret to console output                    
 ///   @return true if interpretation was a success                            
 bool GUISystem::Draw(const Ref<Things::Image>& what) const {
    LglsProfile();

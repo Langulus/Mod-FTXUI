@@ -5,14 +5,14 @@
 ///                                                                           
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
-#include "GUIItem.hpp"
+#include "GUIPart.hpp"
 #include "GUI.hpp"
 
 
 /// GUI item construction                                                     
 ///   @param producer - the system producer                                   
 ///   @param descriptor - instructions for configuring the item               
-GUIItem::GUIItem(GUISystem* producer, Many const& descriptor)
+GUIPart::GUIPart(GUISystem* producer, Many const& descriptor)
    : Downcastable   {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");
@@ -21,7 +21,7 @@ GUIItem::GUIItem(GUISystem* producer, Many const& descriptor)
 }
 
 /// React on environmental change                                             
-void GUIItem::Refresh() {
+void GUIPart::Refresh() {
 
 }
 

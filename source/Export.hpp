@@ -13,7 +13,7 @@ using namespace Langulus;
 
 struct GUI;
 struct GUISystem;
-struct GUIItem;
+struct GUIPart;
 
 #if 0
    #define VERBOSE_GUI(...)      Logger::Verbose(Self(), __VA_ARGS__)

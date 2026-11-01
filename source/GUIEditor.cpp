@@ -23,8 +23,8 @@ Component RepresentInner(std::vector<Component> children) {
    });
 }
 
-/// Represent a Tag as GUI                                                  
-///   @param tag - the tag to represent                                   
+/// Represent a Tag as GUI                                                    
+///   @param tag the tag to represent                                         
 ///   @return the FTXUI representation                                        
 Component Represent(Tag const&) {
    //TODO
@@ -32,7 +32,7 @@ Component Represent(Tag const&) {
 }
 
 /// Represent a Part as GUI                                                   
-///   @param part - the part to represent                                     
+///   @param part the part to represent                                       
 ///   @return the FTXUI representation                                        
 Component Represent(Part const&) {
    //TODO
@@ -40,12 +40,12 @@ Component Represent(Part const&) {
 }
 
 /// Represent a Thing as GUI                                                  
-///   @param thing - the thing to represent                                   
+///   @param thing the thing to represent                                     
 ///   @return the FTXUI representation                                        
-Component Represent(const Thing& thing) {
+Component Represent(Thing const& thing) {
    std::vector<Component> properties;
 
-   // Represent tags                                                  
+   // Represent tags                                                    
    std::vector<Component> tags;
    for (auto traitlist : thing.GetTags()) {
       for(auto& tag : traitlist.GetVal())
@@ -81,10 +81,10 @@ Component Represent(const Thing& thing) {
 
 
 /// GUI item construction                                                     
-///   @param producer - the system producer                                   
-///   @param descriptor - instructions for configuring the item               
+///   @param producer the system producer                                     
+///   @param descriptor instructions for configuring the item                 
 GUIEditor::GUIEditor(GUISystem* producer, Many const& descriptor)
-   : Downcastable   {this}
+   : Downcastable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");
    

@@ -7,15 +7,14 @@
 ///                                                                           
 #pragma once
 #include "GUISystem.hpp"
+#include <Langulus/Factory.hpp>
 #include <Langulus/Verbs/Create.hpp>
-#include <ftxui/component/component.hpp>
 
 
 ///                                                                           
 ///   User interface module using FTXUI                                       
 ///                                                                           
 /// Manages and produces GUI systems (which are also console windows)         
-///                                                                           
 struct GUI final : Things::UIModule, Things::PlatformModule {
    using CTTI_Abstract  = No;
    using CTTI_Bases     = Types<Things::UIModule, Things::PlatformModule>;

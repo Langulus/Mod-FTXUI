@@ -24,10 +24,9 @@ struct ftxuisurf : ftxui::Surface {
 ///   FTXUI GUI system and window interface                                   
 ///                                                                           
 ///   Manages and produces GUI items that interact with each other within an  
-/// isolated system. Also acts as Things::Window, since ASCII graphics are         
+/// isolated system. Also acts as Things::Window, since ASCII graphics are    
 /// displayed in a console window, and usually there's only one associated    
 /// with a process at any given time.                                         
-///                                                                           
 struct GUISystem : Things::UISystem, Things::Window, ProducedFrom<GUI> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = GUI;

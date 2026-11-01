@@ -8,7 +8,7 @@
 #pragma once
 #include "Export.hpp"
 #include <Langulus/Producible.hpp>
-#include <ftxui/component/component_base.hpp>
+#include <ftxui/component/component.hpp>
 #include <ftxui/dom/elements.hpp>
 
 
@@ -16,7 +16,6 @@
 ///   GUI item                                                                
 ///                                                                           
 /// A single widget inside of a GUI system                                    
-///                                                                           
 struct GUIEditor : Things::UIPart, ProducedFrom<GUISystem> {
    using CTTI_Abstract  = No;
    using CTTI_Producer  = GUISystem;

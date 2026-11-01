@@ -6,9 +6,7 @@
 /// SPDX-License-Identifier: GPL-3.0-or-later                                 
 ///                                                                           
 #include "GUI.hpp"
-//#include <Langulus/Verbs/Interact.hpp>
-#include <Langulus/Event.hpp>
-#include <Langulus/Math/Vector.hpp>
+#include <Langulus/Profiler.hpp>
 
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
@@ -20,11 +18,11 @@ using namespace ftxui;
 
 
 /// Module construction                                                       
-///   @param runtime - the runtime that owns the module                       
-///   @param descriptor - instructions for configuring the module             
+///   @param runtime the runtime that owns the module                         
+///   @param descriptor instructions for configuring the module               
 GUI::GUI(Runtime* runtime, Many const&)
-   : Things::Resolvable {this}
-   , Things::Module     {runtime} {
+   : Downcastable {this}
+   , Module       {runtime} {
    VERBOSE_GUI("Initializing...");
    VERBOSE_GUI("Initialized");
 }
@@ -35,7 +33,7 @@ void GUI::Teardown() {
 }
 
 /// Module update routine                                                     
-///   @param deltaTime - time between updates                                 
+///   @param deltaTime time between updates                                   
 ///   @return false if the UI requested exit                                  
 bool GUI::Update(Time deltaTime) {
    LglsProfile();

@@ -10,10 +10,10 @@
 
 
 /// GUI item construction                                                     
-///   @param producer - the system producer                                   
-///   @param descriptor - instructions for configuring the item               
+///   @param producer the system producer                                     
+///   @param descriptor instructions for configuring the item                 
 GUIPart::GUIPart(GUISystem* producer, Many const& descriptor)
-   : Downcastable   {this}
+   : Downcastable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");
    Couple(descriptor);

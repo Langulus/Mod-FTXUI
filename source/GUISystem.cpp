@@ -8,6 +8,7 @@
 #include "GUISystem.hpp"
 #include "GUI.hpp"
 #include <Langulus/Math/Color.hpp>
+#include <Langulus/Profiler.hpp>
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;

@@ -20,7 +20,7 @@ using namespace ftxui;
 /// Module construction                                                       
 ///   @param runtime the runtime that owns the module                         
 ///   @param descriptor instructions for configuring the module               
-GUI::GUI(Runtime* runtime, Many const&)
+GUI::GUI(Runtime* runtime, Neat const&)
    : Downcastable {this}
    , Module       {runtime} {
    VERBOSE_GUI("Initializing...");
@@ -43,7 +43,7 @@ bool GUI::Update(Time deltaTime) {
 }
 
 /// Create/Destroy GUI systems                                                
-///   @param verb - the creation/destruction verb                             
+///   @param verb the creation/destruction verb                               
 void GUI::Create(Verb& verb) {
    mSystems.Create(this, verb);
 }

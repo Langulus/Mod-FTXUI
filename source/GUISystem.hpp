@@ -48,7 +48,7 @@ private:
    ftxui::Surface& mBackbuffer;
 
 public:
-   GUISystem(GUI*, Many const&);
+   GUISystem(GUI*, Neat const&);
    ~GUISystem();
 
    void Create(Verb&);
@@ -56,7 +56,7 @@ public:
    void* GetNativeHandle() const noexcept;
    auto GetSize() const noexcept -> Scale2;
    bool IsMinimized() const noexcept;
-   bool Draw(const Ref<Things::Image>&) const;
+   bool Draw(Ref<Things::Image> const&) const;
    bool Update(Time);
    void Refresh();
    void Teardown();

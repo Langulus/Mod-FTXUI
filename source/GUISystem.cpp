@@ -17,7 +17,7 @@ using namespace ftxui;
 /// GUI system construction                                                   
 ///   @param producer the system producer                                     
 ///   @param descriptor instructions for configuring the GUI                  
-GUISystem::GUISystem(GUI* producer, Many const& descriptor)
+GUISystem::GUISystem(GUI* producer, Neat const& descriptor)
    : Downcastable {this}
    , ProducedFrom {producer, descriptor}
    , mScreen      {ScreenInteractive::Fullscreen()}

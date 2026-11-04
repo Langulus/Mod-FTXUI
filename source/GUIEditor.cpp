@@ -83,7 +83,7 @@ Component Represent(Thing const& thing) {
 /// GUI item construction                                                     
 ///   @param producer the system producer                                     
 ///   @param descriptor instructions for configuring the item                 
-GUIEditor::GUIEditor(GUISystem* producer, Neat const& descriptor)
+GUIEditor::GUIEditor(GUISystem const* producer, Neat const& descriptor)
    : Downcastable {this}
    , ProducedFrom {producer, descriptor} {
    VERBOSE_GUI("Initializing...");

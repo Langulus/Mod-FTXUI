@@ -48,7 +48,7 @@ private:
    ftxui::Surface& mBackbuffer;
 
 public:
-   GUISystem(GUI*, Neat const&);
+   GUISystem(GUI const*, Neat const&);
    ~GUISystem();
 
    void Create(Verb&);

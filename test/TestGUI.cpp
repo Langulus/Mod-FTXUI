@@ -27,7 +27,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(gui.GetCount() == 1);
             REQUIRE(gui.CastsTo<Things::UISystem>(1));
             REQUIRE(gui.IsSparse());
-            REQUIRE(root.GetUnits().GetCount() == 1);
+            REQUIRE(root.GetParts().GetCount() == 1);
          }
 
       #if LANGULUS_FEATURE(MANAGED_REFLECTION)
@@ -41,7 +41,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(gui.GetCount() == 1);
             REQUIRE(gui.CastsTo<Things::UISystem>(1));
             REQUIRE(gui.IsSparse());
-            REQUIRE(root.GetUnits().GetCount() == 1);
+            REQUIRE(root.GetParts().GetCount() == 1);
          }
 
          WHEN("The GUI system is created via tokens") {
@@ -54,7 +54,7 @@ SCENARIO("GUI creation", "[gui]") {
             REQUIRE(gui.GetCount() == 1);
             REQUIRE(gui.CastsTo<Things::UISystem>(1));
             REQUIRE(gui.IsSparse());
-            REQUIRE(root.GetUnits().GetCount() == 1);
+            REQUIRE(root.GetParts().GetCount() == 1);
          }
       #endif
 

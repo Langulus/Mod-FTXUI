@@ -26,7 +26,7 @@ Component RepresentInner(std::vector<Component> children) {
 /// Represent a Tag as GUI                                                    
 ///   @param tag the tag to represent                                         
 ///   @return the FTXUI representation                                        
-Component Represent(Tag const&) {
+Component Represent(Annies::Tag const&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
@@ -34,7 +34,7 @@ Component Represent(Tag const&) {
 /// Represent a Part as GUI                                                   
 ///   @param part the part to represent                                       
 ///   @return the FTXUI representation                                        
-Component Represent(Part const&) {
+Component Represent(Things::Part const&) {
    //TODO
    return std::make_shared<ComponentBase>();
 }
@@ -42,13 +42,13 @@ Component Represent(Part const&) {
 /// Represent a Thing as GUI                                                  
 ///   @param thing the thing to represent                                     
 ///   @return the FTXUI representation                                        
-Component Represent(Thing const& thing) {
+Component Represent(Things::Thing const& thing) {
    std::vector<Component> properties;
 
    // Represent tags                                                    
    std::vector<Component> tags;
-   for (auto traitlist : thing.GetTags()) {
-      for(auto& tag : traitlist.GetVal())
+   for (auto taglist : thing.GetTags()) {
+      for(auto& tag : taglist.GetVal())
          tags.push_back(Represent(tag));
    }
    if (not tags.empty())
@@ -56,7 +56,7 @@ Component Represent(Thing const& thing) {
 
    // Represent parts                                                   
    std::vector<Component> parts;
-   for (auto& part : thing.GetUnits())
+   for (auto& part : thing.GetParts())
       parts.push_back(Represent(*part));
    if (not parts.empty())
       properties.push_back(Collapsible("Parts", RepresentInner(parts)));

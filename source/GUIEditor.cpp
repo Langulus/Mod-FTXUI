@@ -56,14 +56,14 @@ Component Represent(Things::Thing const& thing) {
 
    // Represent parts                                                   
    std::vector<Component> parts;
-   for (auto& part : thing.GetParts())
+   for (auto part : thing.GetParts())
       parts.push_back(Represent(*part));
    if (not parts.empty())
       properties.push_back(Collapsible("Parts", RepresentInner(parts)));
 
    // Represent child-things                                            
    std::vector<Component> children;
-   for (auto& child : thing.GetChildren())
+   for (auto child : thing.GetChildren())
       children.push_back(Represent(*child));
    if (not children.empty())
       properties.push_back(Collapsible("Children", RepresentInner(children)));
@@ -140,7 +140,7 @@ GUIEditor::GUIEditor(GUISystem const* producer, Neat const& descriptor)
 
    // The right panel, composed of the hierarchy tree, and selection    
    mTree = Container::Vertical({});
-   for (auto& thing : GetOwners())
+   for (auto thing : GetOwners())
       mTree->Add(Represent(*thing));
 
    mSelection = Container::Vertical({});

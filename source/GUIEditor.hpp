@@ -30,7 +30,7 @@ private:
    int mSelectedTab = 0;
 
    ftxui::Component mLogTab;
-   int mLogScroll;
+   [[maybe_unused]] int mLogScroll;
 
    ftxui::Component mFlowTab;
    ftxui::Component mFlowContents;
@@ -46,7 +46,7 @@ private:
    ftxui::Component mRenderer;
    ftxui::Component mMain;
    int mSplit = 30;
-   int mSplitPrev = 0;
+   [[maybe_unused]] int mSplitPrev = 0;
 
    // Selected GUISystem                                                
    std::vector<std::string> mTabNames;

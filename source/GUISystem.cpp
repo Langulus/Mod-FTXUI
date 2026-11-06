@@ -11,8 +11,6 @@
 #include <Langulus/Profiler.hpp>
 #include <ftxui/screen/color.hpp>
 
-using namespace ftxui;
-
 
 /// GUI system construction                                                   
 ///   @param producer the system producer                                     
@@ -20,7 +18,7 @@ using namespace ftxui;
 GUISystem::GUISystem(GUI const* producer, Neat const& descriptor)
    : Downcastable {this}
    , ProducedFrom {producer, descriptor}
-   , mScreen      {ScreenInteractive::Fullscreen()}
+   , mScreen      {ftxui::ScreenInteractive::Fullscreen()}
    , mBackbuffer  {mScreen/*1, 1*/} {
    VERBOSE_GUI("Initializing...");
 
@@ -28,11 +26,11 @@ GUISystem::GUISystem(GUI const* producer, Neat const& descriptor)
    try {
       // Create the loop and immediately yield, so that we get proper   
       // screen size and other parameters                               
-      mLoop = new ftxui::Loop(&mScreen, Renderer([&] {
+      mLoop = new ftxui::Loop(&mScreen, ftxui::Renderer([&] {
          LglsProfile();
-         return text("test");
+         return ftxui::text("test");
          //return {};// Surface(&mBackbuffer) | flex;
-      }) | CatchEvent([&](Event /*event*/) -> bool {
+      }) | ftxui::CatchEvent([&](ftxui::Event /*event*/) -> bool {
          //if (event.is_mouse())
             //Logger::Special("mouse event"); //this works, but useful only for keyboard
          return false;
@@ -81,7 +79,7 @@ bool GUISystem::Update(Time /*deltaTime*/) {
    //   item.Update(deltaTime);
 
    // Yield FTXUI                                                       
-   mScreen.PostEvent(Event::Custom);
+   mScreen.PostEvent(ftxui::Event::Custom);
    mLoop->RunOnce();
    return true;
 }
@@ -114,7 +112,7 @@ bool GUISystem::IsMinimized() const noexcept {
 /// Draw an image, interpreting it as console output                          
 ///   @param what the image to interpret to console output                    
 ///   @return true if interpretation was a success                            
-bool GUISystem::Draw(const Ref<Things::Image>& what) const {
+bool GUISystem::Draw(Ref<Things::Image> const& what) const {
    LglsProfile();
    auto const& image = *what;
    auto colorData = image.GetDataList<Tags::Color>();

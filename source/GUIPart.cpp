@@ -8,6 +8,8 @@
 #include "GUIPart.hpp"
 #include "GUI.hpp"
 
+#include <Langulus/Annies/Functional/Deepen.hpp>
+
 
 /// GUI item construction                                                     
 ///   @param producer the system producer                                     

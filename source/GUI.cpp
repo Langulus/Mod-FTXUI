@@ -14,8 +14,6 @@ LANGULUS_DEFINE_MODULE(
    GUI, GUISystem, GUIPart, GUIEditor
 )
 
-using namespace ftxui;
-
 
 /// Module construction                                                       
 ///   @param runtime the runtime that owns the module                         

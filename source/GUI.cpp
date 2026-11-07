@@ -8,6 +8,8 @@
 #include "GUI.hpp"
 #include <Langulus/Profiler.hpp>
 
+#include <Langulus/Annies/Functional/Compare.hpp>
+
 LANGULUS_DEFINE_MODULE(
    GUI, 9, "FTXUI",
    "GUI generator and simulator, using FTXUI as backend", "",

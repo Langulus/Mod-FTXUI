@@ -110,21 +110,20 @@ bool GUISystem::IsMinimized() const noexcept {
 }
 
 /// Draw an image, interpreting it as console output                          
-///   @param what the image to interpret to console output                    
+///   @param image the image to interpret to console output                   
 ///   @return true if interpretation was a success                            
-bool GUISystem::Draw(Ref<Things::Image> const& what) const {
+bool GUISystem::Draw(Ref<Things::Image> const& image) const {
    LglsProfile();
-   auto const& image = *what;
-   auto colorData = image.GetDataList<Tags::Color>();
-   auto additionalData = image.GetDataList();
+   auto colorData = image->GetDataList<Tags::Color>();
+   auto additionalData = image->GetDataList();
    using RGB = Math::RGB;
    using Style = Logger::Emphasis;
 
-   if (image.GetView().mWidth  != static_cast<uint32_t>(mBackbuffer.dimx())
-   or  image.GetView().mHeight != static_cast<uint32_t>(mBackbuffer.dimy())) {
-      mBackbuffer = Surface {
-         static_cast<int>(image.GetView().mWidth ),
-         static_cast<int>(image.GetView().mHeight)
+   if (image->GetView().mWidth  != static_cast<uint32_t>(mBackbuffer.dimx())
+   or  image->GetView().mHeight != static_cast<uint32_t>(mBackbuffer.dimy())) {
+      mBackbuffer = ftxui::Surface {
+         static_cast<int>(image->GetView().mWidth ),
+         static_cast<int>(image->GetView().mHeight)
       };
    }
 
@@ -149,9 +148,9 @@ bool GUISystem::Draw(Ref<Things::Image> const& what) const {
 
          // Build an ftxui::Image                                       
          auto p = reinterpret_cast<ftxuisurf&>(mBackbuffer).get_pixels().data();
-         for (uint32_t y = 0; y < image.GetView().mHeight; ++y) {
-            for (uint32_t x = 0; x < image.GetView().mWidth; ++x) {
-               p->background_color = Color {
+         for (uint32_t y = 0; y < image->GetView().mHeight; ++y) {
+            for (uint32_t x = 0; x < image->GetView().mWidth; ++x) {
+               p->background_color = ftxui::Color {
                   static_cast<uint8_t>(bgColor_raw->r * 255),
                   static_cast<uint8_t>(bgColor_raw->g * 255),
                   static_cast<uint8_t>(bgColor_raw->b * 255)
@@ -159,7 +158,7 @@ bool GUISystem::Draw(Ref<Things::Image> const& what) const {
 
                auto fg = static_cast<uint8_t>(255 - (bgColor_raw->r * 0.299 + bgColor_raw->g * 0.587 + bgColor_raw->b * 0.114) * 255);
                if (fg >= 100 and fg <= 156) fg -= 100;
-               p->foreground_color = Color {fg, fg, fg};
+               p->foreground_color = ftxui::Color {fg, fg, fg};
 
                p->character = *symbols_raw;
                //p->grapheme = *symbols_raw;

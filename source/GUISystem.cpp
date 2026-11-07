@@ -11,6 +11,8 @@
 #include <Langulus/Profiler.hpp>
 #include <ftxui/screen/color.hpp>
 
+#include <Langulus/Annies/Functional/Compare.hpp>
+
 
 /// GUI system construction                                                   
 ///   @param producer the system producer                                     
@@ -116,8 +118,8 @@ bool GUISystem::Draw(Ref<Things::Image> const& image) const {
    LglsProfile();
    auto colorData = image->GetDataList<Tags::Color>();
    auto additionalData = image->GetDataList();
-   using RGB = Math::RGB;
-   using Style = Logger::Emphasis;
+   //using RGB = Math::RGB;
+   //using Style = Logger::Emphasis;
 
    if (image->GetView().mWidth  != static_cast<uint32_t>(mBackbuffer.dimx())
    or  image->GetView().mHeight != static_cast<uint32_t>(mBackbuffer.dimy())) {

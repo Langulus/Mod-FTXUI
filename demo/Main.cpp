@@ -8,11 +8,11 @@
 #include <Langulus/Thing.hpp>
 #include <Langulus/CppAPI/UI.hpp>
 #include <Langulus/Time.hpp>
+#include <Langulus/Framerate.hpp>
 #include <thread>
 
-LANGULUS_RTTI_BOUNDARY(RTTI::MainBoundary)
 using namespace Langulus;
-
+using Things::Thing;
 
 int main(int, char**) {
    Framerate<60> fps;
@@ -21,7 +21,7 @@ int main(int, char**) {
    auto root = Thing::Root<false>("FTXUI");
 
    // Create user interface                                             
-   root.CreateUnit<Things::UISystem>();
+   root.CreatePart<Things::UISystem>();
 
    while (true) {
       // Update until quit                                              

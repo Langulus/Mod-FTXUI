@@ -18,7 +18,7 @@ SCENARIO("GUI creation", "[gui]") {
          auto root = Thing::Root<false>("FTXUI");
 
          WHEN("The GUI system is created via abstractions") {
-            auto gui = root.CreateUnit<Things::UISystem>();
+            auto gui = root.CreatePart<Things::UISystem>();
 
             // Update once                                              
             root.Update({});

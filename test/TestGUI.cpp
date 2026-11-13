@@ -7,13 +7,17 @@
 ///                                                                           
 #include <Langulus/CppAPI/UI.hpp>
 #include <Langulus/Testing.hpp>
+#include <Langulus/Allocator.hpp>
+
+using namespace Langulus;
+using Things::Thing;
 
 
-SCENARIO("GUI creation", "[gui]") {
-   static Allocator::State memoryState;
+SCENARIO("GUI creation") {
+   static MemoryState memoryState;
    
-   for (int repeat = 0; repeat != 10; ++repeat) {
-      GIVEN(std::string("Init and shutdown cycle #") + std::to_string(repeat)) {
+   GIVEN("Init and shutdown cycles") {
+      for (int repeat = 0; repeat != 10; ++repeat) {
          // Create root entity                                          
          auto root = Thing::Root<false>("FTXUI");
 
@@ -58,8 +62,8 @@ SCENARIO("GUI creation", "[gui]") {
          }
       #endif
 
-         // Check for memory leaks after each cycle                     
          REQUIRE(memoryState.Assert());
+         REQUIRE_FALSE(Allocator::CollectGarbage());
       }
    }
 }
